@@ -4,16 +4,18 @@ phpメモ
 
 [TOC]
 
-##基本
-    htmlの中にphpの処理を書く場合は
-    ・ファイル名を .php にする
-    ・html内のphp処理を <?php ?> で囲む
-    とすると、sublimeでhtmlのタグもphpの公文も色分けされるので見やすい。
+#基本
+  htmlの中にphpの処理を書く場合は
 
-##インストール
-Linux::  
-    ルートで作業する  
-~~~sh
+  * ファイル名を .php にする
+  * html内のphp処理を <?php ?> で囲む
+  
+  とすると、sublimeでhtmlのタグもphpの公文も色分けされるので見やすい。
+
+#インストール
+###Linux
+ルート(管理者権限のあるユーザー)で作業する  
+~~~
 $su -
 
 ##PHPをインストール
@@ -64,18 +66,20 @@ PHPの設定 (/etc/php.iniを編集)
   をインストールするとよい  
 
 
-##ファイルパス
-Mac
-	/private/etc/php.ini
-Windows
+#ファイルパス
+###Mac
+  |説明|ファイルパス|
+  |!--|!--|
+	php設定ファイル | /private/etc/php.ini
+  Webドキュメントルート | /Library/WebServer/Documents
+###Windows
 
-Linux
+###Linux
 
 phpファイルの置き場所  
-/Library/WebServer/Documents
 
 
-##対話モード
+#対話モード
   Windowsでは
   php -a 
   でインタラクティブモードを起動し、
@@ -89,7 +93,7 @@ phpファイルの置き場所
     などと <?php ?> で処理を囲ってから Ctrl + Z を入力する必要がある。
 
     
-##hello world
+#hello world
 <!-- hello:   -->
 htmlファイル内でPHPプログラムを動作させてみる
 
@@ -108,19 +112,20 @@ php_test.html
 </html>
 ~~~
 
-##PHPのログを出力する log: logs:
+###PHPのログを出力する
+<!-- log:: logs::  -->
 　php.iniの設定
 ~~~ini
-#htmlにエラーを出力するかどうか
+###htmlにエラーを出力するかどうか
 display_errors = On/Off
   
 ###ログの出力レベル
 error_reporting = E_ALL | E_STRICT
 
-#ファイルに出力
+###ファイルに出力
 log_errors = On/Off
 
-#出力ファイルのパス
+###エラーログのパス
 error_log = /var/log/php/error.log
 ~~~
 
@@ -131,19 +136,20 @@ error_log = /var/log/php/error.log
 `$sudo apachectl restart`
 
 
-##MySQLでデータベースを捜査する
+##MySQLでデータベースを操作する
   既にphpとMySQLが使用できる状態にしてある前提で進める
   phpで以下のメソッドを使用する
 
-__接続__:
-    mysql_connect
+###接続
+mysql_connect
 ~~~
 resource mysql_connect([string server [, string username [, string password [, bool new_link [, int client_flags]]]]])
 
 例: $link = mysql_connect('localhost', 'root', 'poco');
 ~~~
-__切断__:
-  mysql_close
+
+###切断
+ mysql_close
 ~~~
 bool mysql_close([resource link_identifier])
 
@@ -157,8 +163,6 @@ bool mysql_close([resource link_identifier])
   mysql と mysqli そして PDO  
   mysqlは古いので使用しない方がよいらしい。  
 	[どの API を使うか](http://php.net/manual/ja/mysqlinfo.api.choosing.php)
-
-sample:: mysqli
 
 ~~~php
 <?php
@@ -222,7 +226,7 @@ else {
 ?>
 ~~~
 
-##文字列表示 print:
+#文字列表示 print:
 ~~~php
 <?php
 //echo:
@@ -243,7 +247,7 @@ else {
   $str = $var_dump($array1);
 ~~~
 
-##基本 basic:
+#基本 basic:
 
 ~~~php
 <?php
@@ -262,7 +266,7 @@ void exit([string $status])
 void exit(int $status)
 ~~~
 
-##変数 var:
+#変数 var:
 PHPでは未定義の変数を参照してもエラーにならずnullが返る。
 
 __宣言__:  
@@ -284,7 +288,7 @@ __グローバル変数__:
       print_r($argv);
     }
 
-###変数の型:  
+##変数の型:  
 |型|説明|
 |!--|!--|
   **boolean**| true / false をとる。大文字、小文字は区別しない  
@@ -295,7 +299,41 @@ __グローバル変数__:
   _オブジェクト_|  
   _NULL_|  
 
-##イクルード
+##変数の型判定　gettype::
+変数の型を判定する方法  
+###gettype(値 or 変数);
+ 
+    echo gettype("hoge");   // string 
+
+    返された文字列は、以下のいずれかの値を持ちます。
+    "boolean"
+    "integer"
+    "double" (歴史的な理由により、float の場合には "double"が返されます。"float" とはなりません)
+    "string"
+    "array"
+    "object"
+    "resource"
+    "NULL"
+    "unknown type"
+
+###各種メソッドを使って判定する
+  get_class() - オブジェクトのクラス名を返す
+  is_array() - 変数が配列かどうかを検査する
+  is_bool() - 変数が boolean であるかを調べる
+  is_callable() - 引数が、関数としてコール可能な構造であるかどうかを調べる
+  is_float() - 変数の型が float かどうか調べる
+  is_int() - 変数が整数型かどうかを検査する
+  is_null() - 変数が NULL かどうか調べる
+  is_numeric() - 変数が数字または数値形式の文字列であるかを調べる
+  is_object() - 変数がオブジェクトかどうかを検査する
+  is_resource() - 変数がリソースかどうかを調べる
+  is_scalar() - 変数がスカラかどうかを調べる
+  is_string() - 変数の型が文字列かどうかを調べる
+  function_exists() - 指定した関数が定義されている場合に TRUE を返す
+  method_exists() - クラスメソッドが存在するかどうかを確認する
+  
+
+#イクルード
 include:  
 require:  
 require_once:  
@@ -311,7 +349,7 @@ require_once:
       include  ページの内容を差し込みたい
       require  PHPの処理を読み込みたい。同じ処理を何度も読み込む必要はないので、通常は require_once を使う。
 
-##定数 const:
+#定数 const:
 ~~~php
 <?php
     //define(識別子, 値);
@@ -320,7 +358,7 @@ require_once:
 ?>
 ~~~
 
-### 自動的に定義される定数
+## 自動的に定義される定数
 |定数名|説明|
 |!--|!--|
   `__LINE__` | ファイル上の現在の行番号。
@@ -332,19 +370,19 @@ require_once:
   `__NAMESPACE__` | 現在の名前空間の名前。
 
 
-##文字列
+#文字列
 <!-- string:: -->
 文字列の連結は`'.'`  
 	`"hoge" . "hoge" . $str1`
 
-####シングルコート文字列 
+###シングルコート文字列 
 
     シングルコード文字列はエスケープ(\nや\t)や変数は展開されない
     '文字列'
     echo 'hello\n'       // hello\n  と表示される
     echo 'hello $hoge'   // hello $hoge と表示される
 
-####ダブルコート文字列
+###ダブルコート文字列
 
     ダブルコートで囲んだ文字列内のエスケープや変数は展開される
     "文字列"
@@ -352,7 +390,7 @@ require_once:
     echo "hello$hoge";  // $hogeが展開されて表示される
     echo "hello${hoge}"   // $hogeが展開されて表示される。上と同じ
 
-####文字列の要素にアクセス
+###文字列の要素にアクセス
 ある文字列を１文字づつ取り出して処理を行う方法
 
     $hoge = "hoge";
@@ -361,14 +399,14 @@ require_once:
       echo $value . "\n";   // h,o,g,e が出力される
     });
 
-####文字列の長さ strlen:
+###文字列の長さ strlen:
     strlen(文字列)
     ※文字列以外の値を渡すとエラーになる。is_stringでチェックが必要
 
-####文字列に変換 strval:
+###文字列に変換 strval:
     $変数 = strval(123);    // 変数には返還後の文字列"123"が入る
 
-####パターンマッチ preg_match:
+###パターンマッチ preg_match:
   preg_match(パターン, 対象文字列, 結果が格納される変数);
 
     preg_match('/(.+)\.js/', $src_string, $m);
@@ -376,7 +414,7 @@ require_once:
     $m[1] -> １つ目の()にヒットした文字列
     $m[2] -> ２つ目の()にヒットした文字列
 
-### 異なる型の加算
+## 異なる型の加算
 数値と文字列の加算(+)は、文字列が数値として評価できた場合にのみ数値として加算される。
 
     $foo = 1 + "10.5";              // $foo は float です (11.5)
@@ -384,7 +422,7 @@ require_once:
     $foo = 1 + "bob-1.3e3";         // $foo は integer です (1)  
     $foo = 1 + "bob3";              // $foo は integer です (1)  後の文字列は無視される
 
-##エスケープ文字
+#エスケープ文字
   ダブルコート内で使用出来るエスケープ。エスケープを使用すると改行やタブ、特殊文字を出力できたりする。
 
     \n 改行
@@ -406,13 +444,13 @@ require_once:
       ccc
     hoge;
 
-##演算子 operator:
-####四則演算
+#演算子 operator:
+###四則演算
     +,-,*,/
     ++    インクリメント。１増やす
     --    デクリメント。１減らす
 
-#####比較演算子
+###比較演算子
   |演算子|説明|
   |!--|!--|  
   == |   型を相互変換した上で値が同じか
@@ -420,17 +458,17 @@ require_once:
   === |  値と型が同じか
   !== |  値と型のどちらかが同じでないか
 
-####論理演算子
+###論理演算子
   |演算子|説明|
   |!--|!--|  
   ! |    not  if(!true) で falseになる 
   && |   条件1 && 条件2  で両方がtrueでtrue
   &#124;&#124; |   条件1 &#124;&#124; 条件2  でどちらかがtrueでtrue
 
-##配列 array:
+#配列 array:
   PHPの配列はすべて連想配列。2次元配列でも子要素の要素数はバラバラにできる
 
-####初期化
+##初期化
 ~~~php
   // 空の配列
   $配列名 = array();
@@ -446,7 +484,7 @@ require_once:
   例:  $array1 = array("hoge", "hoge2", "hoge3");
 ~~~
 
-####配列の参照:
+##配列の参照:
     配列の要素を参照する場合は
       $配列名["キー"]; 
 
@@ -457,33 +495,33 @@ require_once:
         echo $array[0];   // 1
         echo $array[2];   // 3
 
-####要素数を取得: サイズ
+##要素数を取得: サイズ
     count($配列);
 
-####配列の中に配列:
+##配列の中に配列:
     $array1 = array("hoge", array("hoge21", "hoge22", array("hoge31", "hoge32")));
-####配列を表示:
+##配列を表示:
     echo var_dump($配列);
     print_r($配列);
 
-####要素の追加:
+##要素の追加:
     // キーを指定する方法
     $arr[キー] = 値;
     
     // 配列の最後に追加
     $arr[] = 値;
 
-####要素の削除: unset:
+##要素の削除: unset:
     $array = array(a=>1, b=>2, c=>3);
     unset($array[b]);
 
-####要素が存在するかどうかを判定する: array_key_exists:
+##要素が存在するかどうかを判定する: array_key_exists:
     $ret = array_key_exists($配列[キー]);
     $array=(a=>1,b=>2,c=>3);
     array_key_exists($array[a]);    // true
     array_key_exists($array[e]);    // false
 
-####全要素のアクセス: foreach:
+##全要素のアクセス: foreach:
     $array = array(a=>1, b=>2, c=>3, d=>4);
  
     // 値
@@ -495,40 +533,7 @@ require_once:
         echo "key=$key value=$value\n";
     }
 
-##変数の型判定　gettype::
-変数の型を判定する方法  
-###gettype(値 or 変数);
- 
-    echo gettype("hoge");   // string 
-
-    返された文字列は、以下のいずれかの値を持ちます。
-    "boolean"
-    "integer"
-    "double" (歴史的な理由により、float の場合には "double"が返されます。"float" とはなりません)
-    "string"
-    "array"
-    "object"
-    "resource"
-    "NULL"
-    "unknown type"
-
-####各種メソッドを使って判定する
-  get_class() - オブジェクトのクラス名を返す
-  is_array() - 変数が配列かどうかを検査する
-  is_bool() - 変数が boolean であるかを調べる
-  is_callable() - 引数が、関数としてコール可能な構造であるかどうかを調べる
-  is_float() - 変数の型が float かどうか調べる
-  is_int() - 変数が整数型かどうかを検査する
-  is_null() - 変数が NULL かどうか調べる
-  is_numeric() - 変数が数字または数値形式の文字列であるかを調べる
-  is_object() - 変数がオブジェクトかどうかを検査する
-  is_resource() - 変数がリソースかどうかを調べる
-  is_scalar() - 変数がスカラかどうかを調べる
-  is_string() - 変数の型が文字列かどうかを調べる
-  function_exists() - 指定した関数が定義されている場合に TRUE を返す
-  method_exists() - クラスメソッドが存在するかどうかを確認する
-  
-##if文 if:
+#if文 if:
   
     if(条件){
     } elseif(条件2) {
@@ -540,13 +545,13 @@ require_once:
     if (false) or (0)    // 常にfalse
 
 
-##loop:
-####for
+#loop:
+##for
     for ($cnt=0; $cnt < 10; $cnt++) {
         echo "cnt=${cnt}\n";
     }
 
-####foreach
+##foreach
 <!-- foreach:: -->
 
     $array = array(name=>"shutaro", age=>36, comment=>"hoge");
@@ -554,7 +559,7 @@ require_once:
       echo "key=${key} value=${value}\n";
     }
 
-####while
+##while
 <!-- while:: -->
 
     while(条件式){
@@ -568,7 +573,7 @@ require_once:
       $cnt--;
     }
 
-##switch文
+#switch文
 <!-- switch:: -->
   Cとほぼ一緒
 
@@ -586,18 +591,18 @@ require_once:
        echo "iは0,1,2に等しくない";
     }
 
-##enum
+#enum
   PHPでは言語ではenumをサポートしていないため、リフレクションを使って実装する  
   [PHPで列挙型(enum)を作る](http://qiita.com/Hiraku/items/71e385b56dcaa37629fe)
 
-##関数
+#関数
  <!-- func: function: -->
 
 + PHPでは関数呼び出しの後に関数の宣言を定義してもOK
 + PHPでは関数がグローバルスコープにある
 + 再起呼び出しが可能
 
-####宣言  
+##宣言  
 
     fucntion 関数名($引数1, $引数2, ...){
         // 処理
@@ -611,12 +616,12 @@ require_once:
     }
 
 
-####呼び出し
+##呼び出し
   $戻り値 = 関数名(引数1, 引数2, ...);  
   $戻り値 = @関数名(引数1, 引数2, ...);   
     先頭に@をつけるとエラーが出力されなくなる
 
-####動的な関数の有効化
+##動的な関数の有効化
   関数の中に関数定義を行うことで、外の関数が呼び出された後に中の関数が利用可能になる。
 
     function func1(){
@@ -629,7 +634,7 @@ require_once:
     func1();        // func1のfunc2が有効になる
     func2();        // ok
 
-####引数の参照渡し
+##引数の参照渡し
   関数の引数を参照型にすることで、関数内で引数に渡した変数や配列の内容を変更することができる
 
     // 参照渡しにしたい変数の先頭に & をつける
@@ -640,12 +645,12 @@ require_once:
     hoge($count1);
     echo $count1;   // hogeメソッドの中でインクリメントされたので 11 になる
     
-##クラス
+#クラス
 <!-- class: object: -->
 PHPのクラスは以下のような機能を持つ。
 ※オブジェクトはクラスから生成された実態。インスタンスともいう。
   
-####クラスの定義:
+##クラスの定義:
     class クラス名 {
       public $プロパティ = 初期値;
       private $プロパティ = 初期値;
@@ -654,19 +659,19 @@ PHPのクラスは以下のような機能を持つ。
       }
     }
 
-####インスタンス生成:
+##インスタンス生成:
     $instance = new クラス名();
     もしくは
     $instance = new クラス名;
-####メンバ参照:
+##メンバ参照:
 $instance->プロパティ変数;
 
     $hoge = new Hoge();
     $hoge->name;
-####メソッド呼び出し:
+##メソッド呼び出し:
     $instance->メソッド();
 
-####インスタンスの参照:  
+##インスタンスの参照:  
   生成済みのインスタンスを別の変数に代入すると、代入先の変数は代入元の変数の参照になる。
   参照なので実態は１つだけ。よって参照元、参照先の変更はどちらにも反映される。
 
@@ -674,7 +679,7 @@ $instance->プロパティ変数;
     $hoge2 = $hoge;
     $hoge3 = & $hoge;
 
-####クローン
+##クローン
 <!-- clone: -->
   PHPではインスタンス変数の代入は参照を作るだけなので、別のインスタンスを作りたい場合は clone を使用する
 
@@ -694,12 +699,12 @@ $instance->プロパティ変数;
       }
     }
 
-####アクセス制 public: private: protected:
+##アクセス制 public: private: protected:
   publicはクラスの外から参照可能  
   privateはクラスの外から参照不可  
   protectedは定義したクラスと継承したクラスからのみ参照可能  
 
-#####static:
+###static:
   staticをつけたプロパティやメソッドはクラスのインスタンスなしに呼び出すことができる。C++で言うところのclass変数、classメソッド。
   
     Class CTest1 {
@@ -713,7 +718,7 @@ $instance->プロパティ変数;
       CTest1::static_func();
     }
 
-#####finalキーワード:
+###finalキーワード:
   final メソッドは継承先のクラスで上書きできない。  
   final クラスは継承できない。  
 
@@ -725,7 +730,7 @@ $instance->プロパティ変数;
     // 拡張（継承）不可  
   }
 
-####オブジェクト定数:
+##オブジェクト定数:
   変更できない定数。インスタンスなしでアクセス可能なのでstatic変数に似ている。
   
     class MyClass
@@ -739,7 +744,7 @@ $instance->プロパティ変数;
     echo MyClass::CONSTANT . "\n";
   
 
-####コンストラクタとデストラクタ
+##コンストラクタとデストラクタ
 <!-- construct: destruct: -->
 
     class CTest1
@@ -762,7 +767,7 @@ $instance->プロパティ変数;
     $hoge->disp();
     $hoge = null;       // ここで$hogeのインスタンスへの参照がなくなるのでデスクトラクタが呼ばれる
 
-####継承: extends:
+##継承: extends:
   PHPでは継承先のクラスは継承元の public,protectedのプロパティ、メソッドを引き継ぐ。privateは引き継がない。
   子クラスから親クラスのメソッドを呼ぶには parent::メソッド名() を使用する。
 
@@ -785,7 +790,7 @@ $instance->プロパティ変数;
 
 <!-- ■標準クラス standard:: -->
 
-##例外処理 exception:
+#例外処理 exception:
   PHPもC＋＋と同じ感じで例外をキャッチできる。
 
     try {
@@ -826,42 +831,42 @@ $instance->プロパティ変数;
     $foo = new Test;
     $foo->testing();
   
-■名前空間 namespace::
+#名前空間 namespace
+<!-- namespace:: -->
+[PHPの名前空間について簡単にまとめてみた](http://ucwd.jp/blog/736)
+  独自の名前空間を使用しない場合、宣言したメソッドやクラス、グローバル変数はすべて同じ名前空間に入るため、名前がかぶってエラーになってしまう。名前がかぶらないようにするためには、必要に応じてファイル単位で別々の名前空間を宣言する必要がある。
   
-  [PHPの名前空間について簡単にまとめてみた](http://ucwd.jp/blog/736)
-
-  独自の名前空間を使用しない場合、宣言したメソッドやクラス、グローバル変数はすべて同じ名前空間に入るため、名前がかぶってエラーになってしまう。
-  名前がかぶらないようにするためには、必要に応じてファイル単位で別々の名前空間を宣言する必要がある。
-  
-  namespace1.php
-
+    namespace1.php
+~~~
     namespace NS1;
     function hoge(){
       echo "hoge1\n";
     }
-
+~~~
   namespace2.php
-
+~~~
     namespace NS2;
     // namespace1.php にある関数 hoge と同じ名前
     function hoge(){
       echo "hoge2\n";
     }
-
+~~~
   test.php
+~~~
     require_once "./namespace1.php";
     require_once "./namespace2.php";
 
     hoge();
     NS1/hoge();
     NS2/hoge();
-  
-##エイリアスとインポート:
+~~~
+
+#エイリアスとインポート:
   名前空間を指定してメソッドを呼び出す場合に  
     `\My\Space\Is\Very\Small\echo_message();`  
   のように長い名前空間をつけるのは煩雑になるので、エイリアスとインポートを使って記述を短縮することができる。
 
-####エイリアス: aslias:
+##エイリアス: aslias:
     名前空間名を別の名前でも呼び出せるようにする
     -- use 元の名前空間 as 別名の名前空間
     require_once 'file02.php';
@@ -870,7 +875,7 @@ $instance->プロパティ変数;
     MySpace\echo_message();
     $obj = new MySpace\MySpaceClass();
 
-####インポート: import:
+##インポート: import:
   `use 元の名前空間 + その名前空間に含まれるクラス名 as 別名のクラス名`  
   名前空間 My\Space に属する MySpaceClass クラスに直接エイリアスを定義し、且つその別名で My\Space\MySpaceClass を呼び出せる
 
@@ -880,9 +885,11 @@ $instance->プロパティ変数;
     $obj01 = new MyClass();
 
 
-##ファイル操作
+#ファイル操作
+<!-- file:: -->
 
-####開くfopen
+##基本操作
+###開くfopen
 <!-- fopen:: -->
 
     handler fopen( string filename , string mode [, int use_include_path ] )
@@ -898,9 +905,11 @@ $instance->プロパティ変数;
       'w+'  読み込み／書き出し用でオープンします。 ファイルポインタをファイルの先頭に置き、 ファイルサイズをゼロにします。 ファイルが存在しない場合には、作成を試みます。
       'a' 書き出し用のみでオープンします。ファイルポインタをファイルの終端に置きます。 ファイルが存在しない場合には、作成を試みます。 このモードは、fseek() では何の効果もありません。 書き込みは、常に追記となります。
       'a+'  読み込み／書き出し用でオープンします。 ファイルポインタをファイルの終端に置きます。 ファイルが存在しない場合には、作成を試みます。 このモードは、fseek() では読み込み位置のみに影響します。 書き込みは、常に追記となります。
-####閉じる fclose:
+###閉じる fclose
+<!-- fclose:: -->
     bool fclose( resource handle )
-####１行読み込む fgets:
+###１行読み込む fgets
+<!-- fgets:: -->
     string fgets( resource handle [, int length ] )
     ファイルポインタから 1 行取得
 
@@ -908,14 +917,16 @@ $instance->プロパティ変数;
       echo fgets( $fp, 9182 );
     }
 
-####１件読み込む fread:
+###１件読み込む fread
+<!-- fread:: -->
     string fread ( resource $handle , int $length )
     handle が指すファイルポインタから最高 length バイト読み込む
 
     戻り値:
     ファイルポインタから読み出した文字列／FALSE（ファイルが終端に達したかエラーの場合）
 
-####１件書き込む fwrite: fputs:
+###１件書き込む fwrite fputs
+<!-- fwrite:: fputs:: -->
     文字列を書き込む fwriteとfputsは同じ機能
     fputs ( resource $handle, string $string [, int write_length]);
     int fwrite ( resource $handle , string $string [, int $length ] );
@@ -933,21 +944,36 @@ $instance->プロパティ変数;
     }
     fclose($fp);
   
-####全行を配列に読み込む:  file():
-  
+##ファイル操作関数
+
+###カレントディレクトリを変更 chdir
+<!-- chdir: -->
+bool chdir ( string $directory )  
+PHP のカレントディレクトリを directory に変更します。
+
+
+###ファイル名を変更 rename
+<!-- rename: -->
+bool rename ( string $oldname , string $newname [, resource $context ] )
+
+###親フォルダ名を取得 dirname
+<!-- dirname -->
+string dirname ( string $path [, int $levels = 1 ] )
+
+###全行を配列に読み込む:  file()
     array file( string filename [, int use_include_path ] )
     
     戻り値:
     ファイルのデータが格納された配列／FALSE（失敗した場合）
 
-####ファイルの内容を読み込む file_get_contents:
+###ファイルの内容を読み込む file_get_contents:
     ファイルの内容をすべて取得する
     string file_get_contents( string filename [, bool use_include_path ] )
 
     例:
     $str = file_get_contents("./hoge.txt");
 
-####ファイルから読み込む
+##ファイルから読み込む
     // hoge.txt から全行を読み込む
     if (!($fp = @fopen("hoge.txt", "r"))) {
       exit("failed to open file\n");
@@ -956,7 +982,7 @@ $instance->プロパティ変数;
       echo fgets( $fp, 9182 );
     }
 
-####ファイルに書き込む
+##ファイルに書き込む
     // hoge.txt に "hello world"を書き込む
     if(!($fp = fopen("hoge.txt", "w+"))) {
       exit("file open error");
@@ -964,10 +990,11 @@ $instance->プロパティ変数;
     fputs($fp, "hello world");
     fclose($fp);
 
-##データベース database:
-<!-- DB: database: -->
+#データベース database
+<!-- DB: database:: -->
 
-##セッション session:
+##セッション session
+<!-- session:: -->
 セッションは一連の接続を管理する仕組み。httpはステートレスなので、通常は連続でページを読み込んでも以前の状態は保持されない。そこで、クライアント側のcookieにセッションIDを保存しておき、サーバー側でこのセッションIDを参照することでユーザーの状態を把握する。
 PHPの提供するセッションの仕組みは  
   session_start()　でセッション開始、セッション再開
@@ -993,18 +1020,22 @@ PHPの提供するセッションの仕組みは
   session_destroy();
 
 
-##その他 other:
+##その他 other
+<!-- other:: -->
 escape:: htmlで入力された文字をエスケープ
-###HTMLエスケープ:
+###HTMLエスケープ
+<!-- escape:: -->
     htmlspecialchars('you & I > he & she');
     // 結果: you &amp; I &gt; he &amp; she
   
-###HTMLアンエスケープ:
+###HTMLアンエスケープ
     htmlspecialchars_decode('you &amp; I &gt; he &amp; she');
     // 結果: you & I > he & she
     
-###Cookie::
-####Cookieを保存:
+#Cookie
+<!-- cookie:: -->
+##Cookie基本操作
+###Cookieを保存
     setcookie( cookieName , value , [timeout] , [path] , [domain] )
     
     cookieName:  Cookie名
@@ -1021,16 +1052,19 @@ escape:: htmlで入力された文字をエスケープ
           Cookieが有効なドメイン。
           例）"www.24w.jp"
 
-####Cookieを取得
+###Cookieを取得
     var value = $_COOKIE[ cookieName ]
     例:
       $hoge = $_COOKIE["hoge"];
 
-####Cookieを削除:
+###Cookieを削除
     setcookie( "クッキー名", "", time()-10000);
     // timeに過去の日付を設定すると削除される。
   
-    
+
+
+#便利関数等
+
 ###リダイレクト　redirect:
   header('location: [パス]');
   ※html本体より前に送信しないといけない。よってheaderの前に echo 文で文字列を出力していたりすると失敗する
@@ -1068,7 +1102,7 @@ escape:: htmlで入力された文字をエスケープ
 ?>
 ```
 
-####フォーマットで日付取得
+###フォーマットで日付取得
     $date_str = date("Y-m-d H:i:d");
     $next_day = date("Y-m-d", strtotime("+1 day"));
 
@@ -1089,7 +1123,8 @@ escape:: htmlで入力された文字をエスケープ
     置換元と置換先が両方とも配列の場合  それぞれの配列から順に文字列を取り出し置換を行う。配列を返す
 
 
-###POST:: GET::
+###POST GET
+<!-- post:: get:: -->
   htmlのフォームから送信されたGET/POSTメッセージを取得する  
   送信側
 
@@ -1169,6 +1204,18 @@ escape:: htmlで入力された文字をエスケープ
     例:
       if (password_verify("hoge", $hashedStr))
 
-###その他
+###ファイルのパスを取得する
+// pathinfo を使用する
+
+~~~
+$file_info = pathinfo('web/public_html/index.php');
+ 
+echo $file_info['dirname']."\n";    // ディレクトリ名
+echo $file_info['basename']."\n";    // ファイル名
+echo $file_info['extension']."\n";    // 拡張子
+echo $file_info['filename'];        // 拡張子を除いたファイル名 ( PHP 5.2.0 以降 )
+~~~
+
+#その他
   [foreachの$valueを参照で受けると思わぬバグを引き起こすAdd Star](http://d.hatena.ne.jp/pasela/20080527/foreach)
 
