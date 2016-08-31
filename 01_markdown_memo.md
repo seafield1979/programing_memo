@@ -320,7 +320,7 @@ function hoge(){
 
     ![代替テキスト](http://www.sunsunsoft.com/image/miro2_s.jpg "画像タイトル")
 
-  ![代替テキスト](http://www.sunsunsoft.com/image/miro2_s.jpg "ミロ")
+  ![代替テキスト](http://www.sunsunsoft.com/image/miro2_s.jpg "ミロ")  
   画像にマウスカーソルを合わせると画像タイトルが表示される
 
 ##Qiita拡張マークダウン
@@ -345,19 +345,25 @@ function hoge(){
     [^2]:はげはげはげ
 
 ###preのシンタックスハイライトにファイル名を表示する
-    ~~~ruby:hoge.rb
-    class Hoge
-      def hoge
-        print 'hoge'
-      end
-    end
-    ~~~
 
-  ![](http://www.sunsunsoft.com/image/markdown_pre_ruby.png)
+~~~ruby.hoge.rb
+class Hoge
+  def hoge
+    print 'hoge'
+  end
+end
+~~~
+
+  ![](http://www.sunsunsoft.com/image/memo/markdown_pre_ruby.png)
 
 ###数式 math:
+※sublimtetextで使うには OmniMarkdupPreviewer の設定に
 
-$x^2 + y^2 = 1$  
+    "mathjax_enabled" : true
+
+を追加する。
+
+$x^2 + y^2 = 1$  ƒ
 $a = \{1, 2, 3\}$  
 $a = \\{1, 2, 3\\}$  
 

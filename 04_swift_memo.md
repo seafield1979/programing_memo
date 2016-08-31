@@ -21,6 +21,57 @@ Swiftも基本的なプログラムの構造はCocoaライブラリを使用し�
   * ヘッダーは必要ない。クラスの定義(Objective-Cのinterface)も必要ない
   * プロパティは基本strong, weakにしたかったら weakを付ける
 
+#Swiftコーディング規約
+<!-- coding:: -->
+[Swiftコーディング規約@Wantedly](http://qiita.com/susieyy/items/f71435cc962e70d81b37)
+
+##命名規則
+<!-- naming -->
+~~~swift
+// 変数、関数 ハンガリアン記法
+let flag = true   // 先頭は小文字
+let gameStageFlag = true  // 単語の先頭は大文字
+
+// 関数 
+func goHoge() {}
+// 第一引数の名前を関数名にふくめる (~FromString)
+func goHogeFromString(hoge : String){}
+~~~
+
+###初期値を代入する場合は変数の型名をつけない
+~~~swift
+// ◯
+let text = "Hoge Fuga"
+
+// ☓
+let text: String = "Hoge Fuga"
+
+// 型が曖昧な場合は記述する
+// ◯ Int / UInt / NSInteger / NSUInteger の区別がつかないので明記する
+let i: Int = 0
+
+// ◯ Float / CGFloat / Double の区別がつかないので明記する
+let p: Float = 3.14
+~~~
+
+###配列の初期化
+第一引数は可読性を考慮して、必要であれば外部引数名を利用する。
+~~~swift
+// 配列
+// ◯
+var elements = [Int]()
+// ☓
+var elements: [Int] = []
+~~~
+
+###関数
+~~~swift
+第一引数は可読性を考慮して、必要であれば外部引数名を利用する。
+// ◯
+func dateFromString(dateString: String) -> NSDate
+dateFromString("2014-03-14") // 引数がStringを取ることが関数から類推できる
+~~~
+
 #文字列表示 (print)
 <!-- print:: -->
   ・printを実行したメソッド名、行番号を出力
@@ -92,7 +143,12 @@ print("hello:" + bau.description)
 ```swift
 // var 変数名:型 = 値
 var hogehoge:String = "ほげほげ"
-var hogeint
+
+// 初期値なしのインスタンス変数はオプショナルにする
+var hoge:String?
+
+// 一行に複数の宣言をまとめて書く場合は , でつなげる
+var posX : Float, posY : Float
 
 //型を省略すると自動で推測してくれる。
 var hoge = "ほげほげ"   // <- OK
@@ -137,6 +193,8 @@ hoge = "はげ"         // <- 定数は変更できないエラー発生
       }
 
 #for文
+繰り返し処理を行いたいときに使用する。
+
 <!-- for:: -->
 ```swift
 // 基本
@@ -161,6 +219,12 @@ for _ in 1...3 {
     // 何らかの処理を3回実施します
 }
 
+//インデックスを参照する enumerate::
+let array = [10,20,30,40,50]
+for (index, value) in array.enumerate() {
+  print("\(index) : \(value)")
+}
+
 //多重ループを一気に抜ける
 for_i: for i in 1...5 {
     for j in 1...5 {
@@ -173,15 +237,16 @@ for_i: for i in 1...5 {
 }
 ```
 
+
 #switch~case
 <!-- switch:: -->
   swiftのswitch文の特徴
 
   * case に複数の値を設定できる<br>
   　例: case 1,2,3:  
-  * breakを省略してもbreakする
-  * 文字列もswitchできる
+  * breakいらない。
   * breakせずに次のcaseに進みたい場合は fallthrough を使用する
+  * 文字列もswitchできる
     
 ```swift
 // 基本
@@ -248,8 +313,9 @@ for_i: for i in 1...5 {
 ```
 
 #文字列
-<!-- string:: -->
+<!-- string:: str::-->
 
+##基本
 ~~~swift
 //文字列の結合
 var hoge1 = "ほげほげ"
@@ -264,6 +330,55 @@ hoge3 += "あいむはっぴ"           // <- hoge3は"いえいあいむはっ�
   let str = "123"
   let intFromStr   = str.toInt()! + 1  // 124
   let intFromOpStr = str.toInt()       // Optional(123)
+
+//フォーマット指定
+  let x = 100.123
+  let y = 200.123
+  let str = String(format: "%.4f %.4f", x, y)
+
+// 文字列の長さ
+  str.characters.count
+~~~
+
+##正規表現処理クラス
+正規表現でマッチているかチェック、マッチした文字列を取得するには以下のクラスを使うと便利。
+~~~swift
+class Regexp {
+    let internalRegexp: NSRegularExpression
+    let pattern: String
+    
+    init(_ pattern: String) {
+        self.pattern = pattern
+        do {
+            self.internalRegexp = try NSRegularExpression(pattern: pattern, options: [.CaseInsensitive])
+        } catch let error as NSError {
+            print(error.localizedDescription)
+            self.internalRegexp = NSRegularExpression()
+        }
+    }
+    
+    func isMatch(input: String) -> Bool {
+        let matches = self.internalRegexp.matchesInString( input, options: [], range:NSMakeRange(0, input.characters.count) )
+        return matches.count > 0
+    }
+
+    func matches(input: String) -> [String]? {
+        let nsInput = input as NSString
+        if self.isMatch(input) {
+            var results = [String]()
+            if let matches = internalRegexp.firstMatchInString(nsInput as String, options: NSMatchingOptions(), range: NSMakeRange(0, input.characters.count))
+            {
+                for i in 0...matches.numberOfRanges - 1 {
+                    results.append(nsInput.substringWithRange(matches.rangeAtIndex(i)))
+                }
+            }
+            return results
+        }
+        return nil
+    }
+}
+
+
 ~~~
 
 #配列 array
@@ -271,14 +386,23 @@ hoge3 += "あいむはっぴ"           // <- hoge3は"いえいあいむはっ�
 Swiftの配列は要素の型を指定した場合は全要素が同じ型、指定しない場合はいろいろな型の値を混合できる
 ##配列変数の宣言
 ```swift
+  // 宣言
   //let array1 : [要素の型]   
   letだとimmutable, varだとmutable
-  var array1 : [Int]    // 要素がInt型の配列
-  var array2 : [String] // 要素がString型の配列
+  var array1 : [Int]    // 要素がInt型の配列 (空)
+  var array2 : [String] // 要素がString型の配列 (空)
   var array3 : [Int] = [1,2,3,4,5]    // 初期化
   var array4 : [String] = ["a","b","c","d","e"]   // 初期化
   var array5 = [1,"aaa"]    // いろいろな型を混ぜてもOK (Objective-CのNSArrayと同じ)
-  var array52 : Array<Any> = [2,"bbb"]    // 混合型の型名は Array<Any>
+  var array6 : Array<Any> = [2,"bbb"]    // 混合型の型名は Array<Any>
+  var array7 : [String] = []  // 初期化したけど要素が0の配列
+  var array72 = [String]()     // 初期化済み0配列  こちらの書き方が推奨
+  var array8 : [String]    // 未初期化の配列(initで初期化しないとエラーになる)
+
+  // 未初期化の配列はinitで初期化する
+  init() {
+    self.array8 = ["a", "b", "c"]
+  }
 
   //多次元配列
   let matrix:[[String]] = [["hoge","fuga"] ,["ohayo","hello"]]
@@ -286,21 +410,50 @@ Swiftの配列は要素の型を指定した場合は全要素が同じ型、指
 
   // 空の配列を宣言
   // 全て文字列の空の配列を宣言
-  var partyA: [String] = []
-  var partyB: Array<String> = []
-  var partyC = [String]()
+  var empty: [String]
 
-  // 指定の要素数で初期化
+  // 空の配列は初期化してから使用
+  empty = Array(count:10, "")
+  empty = []
+
+  // 空の配列に要素を追加していく
+  var array = [String] = []
+  array.append("hoge1")
+  array.append("hoge2")
+  array.append("hoge3")
+
+  // 指定の要素数で初期化 Array:count:repeatedValue
   var array = Array(count : [要素数], repeatedValue : [初期値])
-
-  // 要素数が10で各要素を"mz"で初期化する
-  var array = Array(count : 10, repeatedValue : "mz")
 
 ```
 ##配列の参照 (配列名[インデックス])
 ```swift
-  var array1 : [Int] = [1,2,3,4,5];
+  // 各要素の参照は 配列名[インデックス]
+  let array1 : [Int] = [1,2,3,4,5];
   print("2:\(array[1]) \(array[2])")    // 2, 3 と出力される
+
+  // for ~ inで全要素にアクセス
+  let array2 = [1,2,3,4,5] 
+  for i in array2 {
+    print(i)
+  }
+
+  // enumerate()を使ってインデックスと値を参照
+  let array3 = [10,20,30,40,50]
+  array3.enumerate().forEach { print("index:\($0.0) value:\($0.1)")}
+
+  // 配列の内容を表示したい場合は forEach を使うと簡単
+  let array4 = [1,2,3,4,5]
+  array4.forEach {print($0)}
+
+  for (index, score) in array3.enumerate() {
+      print("index:\(index), score: \(score)")
+      // index:0, score: 10
+      // index:1, score: 20
+      // index:2, score: 30
+      // index:3, score: 40
+      // index:4, score: 50
+  }
 
   // 混合型を参照する場合
   // 混合型の配列から指定の方の値だけを抜き出す
@@ -308,7 +461,7 @@ Swiftの配列は要素の型を指定した場合は全要素が同じ型、指
   var ki : [AnyObject] = []
   var array: [AnyObject] = ["abc", 1, "def", 2, "ghi", 3]
   
-  for (var i = 0; i < array.count; i++) {
+  for i in ..< array.count {
       // String
       if let string = array[i] as? String {
           ks.append(string)
@@ -321,25 +474,123 @@ Swiftの配列は要素の型を指定した場合は全要素が同じ型、指
   print("test3_1: \(ks)")
   print("test3_1: \(ki)")
 ```
-##要素の追加 (.append)
+
+## 配列の操作
+###要素の追加 (.append)
+要素を１件だけ追加する
+
     var array1 : [Int] = [1,2,3,4,5]
     array1.append(6)
-##配列の追加 (+=[])
+###配列の追加 (+=[])
+要素をまとめて追加する
+
     var array1 : [Int] = [1,2,3]
     array1 += [1,2,3]
 
-##要素の変更
+###要素の変更
     var array1 : [Int] = [1,2,3]
     array1[0] = 10
 
-##要素の削除 (removeAtIndex)
+###要素の削除 (removeAtIndex)
     var array1 : [Int] = [1,2,3]
     array1.removeAtIndex(1)
     print(array1)     // 2,3
 
-##repeatedValue 配列を指定の値で初期化する
+###repeatedValue 配列を指定の値で初期化する
     var array1 : [AnyObject] = Array(count:10, "hoge")
     print(array1)      // [hoge,hoge,hoge,hoge,hoge,hoge,hoge,hoge,hoge,hoge]
+
+##便利関数
+###map
+<!-- map:: -->
+
+mapは配列の全要素に処理を行い、新しい値を返すような場合に使用する。
+例: 
+
+  * 配列の要素を100倍した配列を返す
+  * 配列の文字列を大文字に変換した配列を返す
+
+~~~swift
+// 全要素を10倍した新しい配列を取得
+let array1 = [1,2,3,4,5]
+let newArray = array1.map{ $0 * 10 }
+newArray.forEach{ print($0) }  // 10,20,30,40,50
+~~~
+
+###filter
+<!-- filter:: -->
+filterは配列の要素のうち条件に合致したものを残したい場合に使用する
+例: 配列に対して
+
+  * しきい値より大きい値のみ残す
+  * 特定の書式の文字列のみ残す
+
+~~~swift
+// 指定の値以上の値のみ残す
+let array1 = [1,2,3,4,5,6,7,8,9,10]
+let array2 = array1.filter { $0 > 5 }
+array2.forEach { print($0) }  // 6,7,8,9,10
+~~~
+
+###sort 
+<!-- sort:: -->
+配列の要素の順番を並び替える。
+sortはソート後に新しい配列を返す。  
+sortInPlaceは元の配列をソート済みに変更する。  
+
+~~~swift
+// sortInPlace
+print("-- sortInPlace 1 --")
+var arrayIP1 = [50,30,21,35,55,1]
+var arrayIP2 = ["hoge", "abc", "123", "ddd", "a123"]
+
+arrayIP1.sortInPlace()
+arrayIP1.forEach { print($0) }
+
+arrayIP2.sortInPlace()
+arrayIP2.forEach { print($0) }
+
+// 昇順
+arrayIP1.sortInPlace(<)
+arrayIP1.forEach { print($0) }
+
+// 降順
+arrayIP1.sortInPlace(>)
+arrayIP1.forEach { print($0) }
+
+// sort
+let array1 = [50,30,21,35,55,1]
+let array2 = ["hoge", "abc", "123", "ddd", "a123"]
+
+// sortで並べ替え(整数)
+array1.sort().forEach { print($0) }
+
+// sortで並べ替え(文字列)
+array2.sort().forEach { print($0) }
+
+// 昇順(小さい順)に並び替え
+//let newArray = array1.sort {$0 < $1}
+let newArray = array1.sort(<)
+newArray.forEach {print($0)}
+
+// 降順(大きい順)に並び替え
+//let newArray2 = array1.sort {$0 > $1}
+let newArray2 = array1.sort(>)
+newArray2.forEach {print($0)}
+
+// for文で使用する
+for i in array1.sort(>) {
+    print(i)
+}
+~~~
+
+###reverse 
+配列の並びを逆順にする
+~~~swift
+let array1 = ["a1", "hoge", "b3", "hage"]
+let newArray = array1.reverse()
+newArray.forEach { print($0) }
+~~~
 
 #辞書型配列 dictionary
 <!-- dictionary:: -->
@@ -486,10 +737,10 @@ hoge(100)
 
 //⑦キーワード引数（外部引数）を使う
 //引数の変数名の前に#をつける。
-func hoge(#a: Int){
-  print(a)
+func hoge(#a: Int, #b: Int){
+  print(format: "%d %d", a, b)
 }
-hoge(a: 100)
+hoge(a: 100, b:200)
 
 //あまりないと思うが、引数名とは別名で指定したい場合は、以下のように書ける(外部引数名)。
 //func 関数名(外部引数名 内部引数名 : 変数型)
@@ -554,7 +805,7 @@ swiftのクラスの特徴
   * init()はイニシャライザといってクラスの初期化時(インスタンス生成時)に呼ばれる。
   * クラス変数は持てない（クラスメソッドは持てる）
   * メンバ変数のゲッター、セッターを定義できる
-
+  * クラスのメソッド内でそのクラスのメンバ変数やメソッドのself.は省略可能
 
 ###クラスの宣言 
 
@@ -882,30 +1133,29 @@ swiftのキャストは
 
 ###エクステンション extension
 <!-- extension:: -->
-エクステンションは既存のクラスを拡張するための機能
-
+エクステンションは既存のクラス(標準クラスを含む)を拡張するための機能
 エクステンションの特徴
   
-  * 計算型プロパティと静的な計算型プロパティ（計算型の型プロパティ）を追加できます。
-  * インスタンスメソッドと型メソッドを追加できます。
-  * イニシャライザを追加できます。（追加できるのはコンビニエンスイニシャライザのみです。指定イニシャライザやデイニシャライザは追加できません。）
-  * サブスクリプトを追加できます。
-  * ネストした型を定義してそれを使うことができます。
-  * 新たなプロトコルに適合させることができます。
+  * 計算型プロパティと静的な計算型プロパティ（計算型の型プロパティ）を追加できる
+  * インスタンスメソッドと型メソッドを追加できる
+  * イニシャライザを追加できます。（追加できるのはコンビニエンスイニシャライザのみ）
+  * サブスクリプトを追加できる
+  * ネストした型を定義してそれを使うことができる
+  * 新たなプロトコルに適合させることができる
 
   エクステンションを使う場合は、次の様に型名の前にextensionキーワードをつけます。
 
 ~~~swift
-    extension SomeType {
-        // 新たなメソッドの追加やプロトコルへの適応
-    }
+extension 拡張元のクラス名 {
+    // 新たなメソッドの追加やプロトコルへの適応
+}
 ~~~
 
 エクステンションにより新たなプロトコルへ適応させる場合は、次の様に記述します。
 ~~~swift
-    extension SomeType: SomeProtocol, AnotherProtocol {
-        // プロトコルへ適応するためのメソッド
-    }
+extension SomeType: SomeProtocol, AnotherProtocol {
+    // プロトコルへ適応するためのメソッド
+}
 ~~~
 
 ####拡張例
@@ -982,7 +1232,7 @@ optional型の変数を使用する場合は hoge!  のように変数名の後�
 ###unwrapする（その２ Optional Chaining） 
 !でアンラップすると変数がnilのときに実行時エラーが発生する。  
 ?でアンラップすると変数がnilのときにエラーが発生せずにnilが返る  
-  →アンラップしたときにnilがなる可能性がある場所で使用するとエラーになる。  
+  →アンラップしたときにnilが受け取れない可能性がある場所で使用するとエラーになる。  
 ~~~swift
   var hoge : String? = nil
   print(hoge?)     // これはエラー。printの引数はnilを受け取れない
@@ -1121,6 +1371,17 @@ enum内に関数を定義して機能を持たせることができる
 
   // 関連値
   // あまり使わなさそうなのでスキップ
+
+  // switch文
+  let s = SignalF.Yellow
+  switch s {
+  case .Blue:
+    print("青")
+  case .Yellow:
+    print("黄")
+  case .Red:
+    print("赤")
+  }
 ~~~
 
 #構造体 struct
@@ -1240,6 +1501,9 @@ print(test1[0])  // 222
 print(test1[1])  // 111
 ~~~
 
+#標準のクラスを拡張する
+swiftでは既存のクラス（標準クラスを含む）
+
 #ジェネリクス
 C++のテンプレートのようなもの
 型が違うだけで処理は同じような場合に、ジェネリックでどの型にも対応する処理を作成できる
@@ -1268,7 +1532,8 @@ C++のテンプレートのようなもの
   print(bigger(s1,val2:s2))
 ~~~
 
-# シングルトン singleton::
+# シングルトン singleton
+<!-- singleton:: -->
 遅延初期化＆スレッドセーフ対応版
 Swiftはstatic変数が使用できないので、
 ~~~swift
