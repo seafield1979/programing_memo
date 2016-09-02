@@ -74,6 +74,18 @@ self.viewController = ViewController(nibName: "ViewController", bundle: nil)
 矩形を表示するオブジェクト。とりあえず画面に何か表示したいときはこのクラスか、このクラスのサブクラスを作ってメインのViewにaddSubviewする。
 
 ##UIView
+
+###メインViewを画面サイズと同じにする
+~~~swift
+class MyViewController {
+    override func loadView() {
+        // スクリーンと同じサイズのUIViewを生成して viewに設定
+        // これで画面サイズの異なるデバイスでも画面サイズとviewのサイズが一致する
+        self.view = UIView(frame: UIScreen.mainScreen().bounds)
+    }
+}
+~~~
+
 ###UIViewオブジェクトを生成
 ~~~swift
 // 座標とサイズを指定してUIViewを作る
@@ -95,8 +107,6 @@ func addSubview(_ view: UIView)
 ~~~swift
 viewController.view.addSubview(label1)
 ~~~
-
-
 
 ###位置・座標を変更する
 ~~~swift
@@ -127,29 +137,394 @@ view?.frame = CGRect(view?.frame!.origin.x,
 
 ~~~
 
-##UIResponderの機能
-タッチやシェイク等のユーザー操作系のイベントを処理するためのクラス
-
-UIViewもUIResponderクラスのサブクラス。なのでUIViewでもタッチ等のイベントが取れる。
 
 ##UILabel
+<!-- uilabel:: -->
 画面にテキストを表示したい場合に使用する
 
 ###生成&表示
 ~~~swift
+// シンプルなラベルを作成
 let label1 : UILabel = UILabel(frame: CGRect(x:50, y:100, width:100, height: 50))
 label1.text = "Hello World!!"
 viewController.view.addSubview(label1)
+
+// カスタマイズしたラベルを作成
+let label = UILabel(frame:CGRectMake(0, 0, 100, 30))
+label.text = "らべる"
+
+// テキスト中央寄せ
+label.textAlignment = NSTextAlignment.Center
+
+// テキストの色
+label.textColor = UIColor.blueColor()
+
+// フォント
+label.font = UIFont(name:"ArialHebew", size:UIFont.labelFontSize())
+ 
+// 背景色
+label.backgroundColor = UIColor.grayColor()
+
+// ラベルの領域にテキストが収まらない場合に、フォントを最大0.5倍まで縮小する
+label.adjustsFontSizeToFitWidth = true
+label.minimumScaleFactor = 0.5
+
 ~~~
 
 ###フォントを変更
-<!-- font:: -->
+<!-- uifont:: -->
+~~~swift
+// フォントを作成
+// UIFont(name:,size:) か UIFontのフォント作成関数を使用する
 
-###テキストの色を変更
-<!-- textcolor: -->
+// ヒラギノフォント
+UIFont(name:"HiraKakuProN-W3", size:UIFont.labelFontSize())
+
+// システムの標準フォントサイズ
+UIFont.systemFontOfSize(UIFont.systemFontSize())
+
+// UIButton用のフォントサイズ
+UIFont.systemFontOfSize(UIFont.buttonFontSize())
+
+// カスタムしたフォントサイズ(20)の
+UIFont.systemFontOfSize(CGFloat(20))
+
+// Italic System Font
+UIFont.italicSystemFontOfSize(UIFont.labelFontSize())
+
+// Bold
+UIFont.boldSystemFontOfSize(UIFont.labelFontSize())
+
+~~~
+
+##UIProgressView
+<!-- uiprogressview:: -->
+進捗状態を 0~100%で表示するView
+
+~~~swift
+// 生成
+let progress = UIProgressView(progressViewStyle: .Default)
+
+// 座標、サイズ設定
+progress.frame = CGRectMake(pos.x, pos.y, 200, 20)
+
+// バーの色を変更
+progress.progressTintColor = UIColor.redColor()
+
+// 進捗度(0.0~1.0)を設定
+progress.progress = 0.5
+
+// サイズを変更
+progress.transform = CGAffineTransformMakeScale(1.0, 4.0)
+
+// 進捗をアニメーションで設定
+progress.setProgress( 0.7, animated: true)
+~~~
+
+##UIPageControl
+<!-- uipagecontrol:: -->
+現在のページを表示するView。
+UIPageControl自体はシンプルで、複数の選択項目の位置の１つが選択された状態を保持するだけ。
+選択項目が変更された時などに呼ばれるイベントを登録しておいてページの切り替えを実現する
+
+~~~swift
+// 生成
+let pageControl = UIPageControl(frame: CGRectMake(50, 100, 200, 30))
+        
+// ページ数
+pageControl.numberOfPages = 3
+
+// 現在のページ
+pageControl.currentPage = 0
+
+// 現在のページを示す●の色
+pageControl.currentPageIndicatorTintColor = .yellowColor()
+
+// ページを示す●の色
+pageControl.pageIndicatorTintColor = .blueColor()
+
+// ページが変更された時のイベントを登録
+pageControl.addTarget(self, action: #selector(self.pageControlChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+
+self.view.addSubview(pageControl)
+
+// ページが変更された時の処理
+@IBAction func pageControlChanged(sender: AnyObject) {
+    if let pageControl = sender as? UIPageControl {
+        print(pageControl.currentPage)
+    }
+}
+~~~
+
+##UIPickerView
+ドラムロール式の項目選択View。複数のドラムロールを持たせることも可能  
+![UIPickerView](http://sunsunsoft.com/image/ios/pickerview.png)
+
+deleteを使用して実現しているのでサンプルのボリュームが大きい。以下のプロジェクトを参照する。  
+[github: PickerViewController.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/UIViewTest/UIViewTest/ViewController/PickerViewController.swift)
+
+
+##UISegmentedControl
+複数の選択項目のうち１つだけ選択できるコントロール
+
+![UISegmentedControl](http://sunsunsoft.com/image/ios/segment.png)
+~~~swift
+// 生成
+// 表示する項目のリストを渡して生成
+let segmented = UISegmentedControl(items: ["山形","宮城","福島"])
+
+// 座標を設定
+segmented.frame = CGRectMake(0, 0, 200, 30)
+
+// 最初に選択されている項目
+segmented.selectedSegmentIndex = 0
+
+// 色(ボタンの枠や文字)
+segmented.tintColor = .redColor()
+
+// 値が変わった時のイベントを登録
+segmented.addTarget(self, action: #selector(self.segmentedValueChanged(_:)), forControlEvents: UIControlEvents.ValueChanged)
+
+~~~
+
+自前の画像でカスタマイズしたい場合は
+[UISEGMENTEDCONTROLをオリジナルの外観にしよう](https://moto44blog.wordpress.com/2013/01/11/uisegmentedcontrol%E3%82%92%E3%82%AA%E3%83%AA%E3%82%B8%E3%83%8A%E3%83%AB%E3%81%AE%E5%A4%96%E8%A6%B3%E3%81%AB%E3%81%97%E3%82%88%E3%81%86/)
+
+##UISlider
+値をスライドして調整するコントロール。
+~~~swift
+// UISliderを生成
+let slider = UISlider(frame:CGRectMake(0, 0, 200, 30))
+// 色を設定
+slider.tintColor = .redColor()
+
+// 識別用のタグを設定
+slider.tag = 2
+
+// スライダーの最大値
+slider.maximumValue = 100
+
+// 値変更の通知タイミング(true: スライド中も通知 / false:スライド中は通知しない)
+slider.continuous = false
+
+// 値が変更された時のイベントを設定
+slider.addTarget(self, action: #selector(self.sliderValueChanged(_:)), forControlEvents: .ValueChanged)
+
+// スライド時のイベント処理
+@IBAction func sliderValueChanged(sender: AnyObject) {
+    if let slider = sender as? UISlider {
+        print(slider.value)
+    }
+}
+~~~
+
+##UISwitch
+<!-- uiswitch:: -->
+On/Offの２つの状態をもつコントロール
+
+~~~switch
+// UISwitchを生成
+let _switch = UISwitch(frame: CGRectMake(0, 0, 100, 30))
+        
+// Offの時の背景色
+_switch.tintColor = .grayColor()
+
+// Onの時の背景色
+_switch.onTintColor = .blueColor()
+
+// ●の色
+_switch.thumbTintColor = .yellowColor()
+
+// 初期状態(OFF)
+_switch.on = false
+
+ // 値が変更された時のイベント追加
+_switch.addTarget(self, action: #selector(self.switchValueChanged(_:)), forControlEvents: .ValueChanged)
+~~~
+
+##UIStepper
+<!-- uistepper:: -->
+値の増減を管理するコントロール。最小値、最大値、一回の増減幅を設定できる。
+
+~~~swift
+// UIStepper生成
+let stepper = UIStepper(frame: CGRectMake(0, 0, 100, 30))
+// 最小値
+stepper.minimumValue = 0.0
+// 最大値
+stepper.maximumValue = 100.0
+// 増減幅
+stepper.stepValue = 1.0
+// 現在の値
+stepper.value = 0.0
+// 色
+stepper.tintColor = .redColor()
+// 値変更時のイベント登録
+stepper.addTarget(self, action: #selector(self.stepperValueChanged(_:)), forControlEvents: .ValueChanged)
+~~~ 
+
+##UITextField
+１行テキスト入力欄のコントロール。タップするとキーボードが出現して、それを使ってテキストを入力できる。
+~~~swift
+// 生成
+let textField = UITextField(frame: CGRectMake(0, 0, 200, 50))
+// テキスト
+textField.text = ""
+
+// プレースホルダー（文字が入力されていない時に表示されるテキスト）
+textField.placeholder = "入力するなり"
+
+// キーボードのタイプ
+/*
+  .keyboardTypeプロパティに UIKeyboardType の値を設定する
+  .Default：デフォルト
+  .ASCIICapable：英字
+  .NumbersAndPunctuation：数字・記号
+  .URL：URL用
+  .EmailAddress：Email用
+  .NumberPad：テンキー
+  .PhonePad：電話番号用
+*/
+textField.keyboardType = .Default
+
+// キーボードのReturnキーの表示
+/* .returnKeyTypeプロパティに UIReturnKeyType の値を設定する
+ .Default：デフォルト(「return」)
+ .Go：「Go」
+ .Join：「Join」
+ .Next：「Next」
+ .Route：「Route」
+ .Search：「Search」
+ .Send：「Send」
+ .Done：「Done」
+ .EmergencyCall：「EmergencyCall」
+*/
+textField.returnKeyType = .Done
+
+// フォントを設定
+textField.font = UIFont(name:"HiraKakuProN-W3", size:UIFont.labelFontSize())
+
+// テキストの色
+textField.textColor = .blackColor()
+
+// 枠のスタイル　(None, Line, Bezel, RoundedRect)
+textField.borderStyle = .RoundedRect
+
+// テキストの寄せる方向 (Left, Right, Center)
+textField.textAlignment = .Left
+
+// クリアボタン (Never, Always, WhileEditing, UnlessEditing)
+textField.clearButtonMode = .UnlessEditing
+
+// デリゲートを指定（通常ViewControllerで処理するのでself)
+textField.delegate = self
+
+
+// 以下UITextFieldDelegateメソッド
+// textField   テキストフィールドを編集する直前に呼び出される
+func textFieldShouldBeginEditing(textField : UITextField) -> Bool
+{return true}
+
+// テキストフィールドの編集が終了する直前に呼び出される
+// ret:
+func textFieldShouldEndEditing(textField : UITextField) -> Bool
+{return true}
+
+// テキストフィールドを編集する直後に呼び出される
+func textFieldDidBeginEditing(textField: UITextField){}
+{
+// textField    テキストフィールドの編集が終了する直後に呼び出される
+func textFieldDidEndEditing(textField: UITextField){}
+
+// textField    Returnボタンがタップされた時に呼ばれる
+func textFieldShouldReturn(textField: UITextField) -> Bool
+{
+    // キーボードを閉じる
+    textField.resignFirstResponder()
+    return true
+}
+
+// textField    クリアボタンがタップされた時に呼ばれる
+// 自動でクリアしたい場合はtrueを返す（ただし、自動クリア時はキーボードが立ち上がる）
+func textFieldShouldClear(textField: UITextField) -> Bool
+{
+    // 自前でテキストをクリアする
+    textField.text = ""
+    return false
+}
+
+~~~
+
+
+##UIWebView
+<!-- uiwebview -->
+Webページを表示するコントロール。
+ 
+###httpのページを読み込む方法
+iOS9からセキュリティの関係でデフォルトの設定ではhttpのページが読めなくなった(httpsはOK)
+httpを読み込むにはプロジェクトのInfo.plistに以下の設定を追加してやる
+
+//  ATS(App Transport Security Settings)を無効
+![ボタン](http://sunsunsoft.com/image/ios/info_ats.png)
+~~~xlm
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+~~~
+
+###サンプル
+~~~swift
+// 生成
+let webView = UIWebView()
+
+// サイズを設定
+webView.frame = CGRectMake(0,20,view.frame.size.width, view.frame.size.height - 100)
+
+// デリゲートを設定
+webView.delegate = self
+
+// ページ読み込み(任天堂のホームページ)
+// 適当なWebページを表示してみる
+let requestURL = NSURL(string: "http://www.nintendo.co.jp")
+let req = NSURLRequest(URL: requestURL!)
+webView.loadRequest(req)
+
+
+// デリゲートメソッド(UIWebViewDelegate)
+
+// ページの読み込みリクエストを受け取った時の処理
+// trueを返すとリクエストのページを読み込む
+func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
+{
+    return true
+}
+
+// ページ読み込み完了時の処理
+func webViewDidFinishLoad(webView: UIWebView) {
+}
+~~~
+
+### UIWebViewプロパティ
+|プロパティ|説明|
+|!--|!--|
+delegate | デリゲートを設定する
+scalesPageToFit (boolean) | ピンチイン／アウトの可否を設定する
+loading (boolean) |ページ読み込み中かどうか
+canGoBack (boolean) | 前のページに戻れるかどうか
+canGoForward (boolean)| 次のページに進めるかどうか
+
+### UIWebViewメソッド
+loadRequest(NSURLRequest) | 指定したページを読み込む
+goBack() | 前のページに戻る
+goForward() | 次のページに進む
+reload() | リロードする
+stopLoading() | ページの読込を中止する
 
 ##UIButton
-<!-- button:: -->
+<!-- uibutton:: -->
+
 ###リンク
 ハイライト時のBG色を設定する方法。直接色を指定できないのでUIColorからUIImageを作成して設定する。  
 [UIButtonハイライト時の色を指定する](http://qiita.com/akatsuki174/items/c0b8b5126b6c12f62001)
@@ -157,10 +532,13 @@ viewController.view.addSubview(label1)
 ###ボタン生成のサンプル
 ~~~swift
 func createSimpleButton() {
+    // ボタン生成。デフォルトの色はテキストの色が白で背景が透明なので、背景が白の場合はテキストの色を変更すること
     let button = UIButton(frame: CGRectMake(pos.x, pos.y, 100, 30))
     button.setTitle(title, forState: UIControlState.Normal)
     button.setTitleColor( UIColor.grayColor(), forState: UIControlState.Highlighted)
+
     // 押された時の処理
+    button.addTarget(self, action: #selector(self.buttonTapped(_:)), forControlEvents: .TouchUpInside)
 
     // addSubview
     view1!.addSubview(button)
@@ -222,6 +600,56 @@ forStateに設定できる状態
   UIControlState.Selected | 選択状態 .selected == true
 
 ![ButtonState](http://i.stack.imgur.com/DDpb2.png)
+
+
+##UIImageView
+<!-- uiimageview:: -->
+
+画像(UIImage)から生成
+~~~swift
+// プロジェクトに追加された画像 "hoge.png" から生成する
+let imageView = UIImageView( image: UIImage(named: "hoge.png") )
+imageView.frame.origin = CGPointMake(100.0, 200.0)
+~~~
+
+自前でUIImageViewを生成
+~~~swift
+// 自前のUIImageを作成して、それを元にUIImageViewを作成する
+func createImageView2(pos : CGPoint, size : CGSize) -> UIImageView
+{
+    var imgView:UIImageView! = nil
+    var img:UIImage! = nil
+    
+    // ここでRGBAの値を指定(今回は適当に青色にしています)
+    let r:Int = 0, g:Int = 0, b:Int = 255
+    let alphaValue:CGFloat = 1.0
+    
+    // UIImageViewを準備(iPadの横向きにフルで取ったとした場合．ご自身の要件に合わせて下さい．)
+    imgView = UIImageView(frame:CGRectMake(pos.x, pos.y, size.width, size.height))
+    
+    // UIImageを自前で準備
+    UIGraphicsBeginImageContextWithOptions(imgView.frame.size, false, 0)
+    // context生成
+    let contextImg:CGContextRef = UIGraphicsGetCurrentContext()!
+    // この塗りつぶす領域の大きさを指定
+    let rect:CGRect = CGRectMake(0, 0, size.width, size.height)
+    //　色をRGBAで指定
+    CGContextSetRGBFillColor(contextImg,CGFloat(r) / 255,CGFloat(g) / 255,CGFloat(b) / 255, alphaValue)
+    // 指定された領域を塗りつぶす
+    CGContextFillRect(contextImg, rect)
+    //　現在のcontextの情報取得
+    img = UIGraphicsGetImageFromCurrentImageContext()
+    //　contextを終了
+    UIGraphicsEndImageContext()
+    
+    // imgをUIImageViewで表示
+    imgView.image = img
+    imgView.image?.drawInRect(CGRectMake(0, 0, imgView.frame.size.width, imgView.frame.size.height))
+    
+    return imgView
+}
+~~~
+
 
 ###ステータスバーを非表示にする
 UIViewControllerクラスに以下のメソッドを追加
@@ -318,14 +746,58 @@ func buttonTapped(sender: UIButton) {
 ~~~
 
 #UIImage
+<!-- uiimage:: -->
 ##生成
 ~~~swift
+// プロジェクトに登録済みの画像ファイルを元にUIImageを生成
+let image = UIImage(named: "image/ume_r.png")
+
+// 読み込みの成功チェック nil の場合は処理しない
+if let imageOK = image {
+    imageView1!.image = imageOK
+}
+~~~
+
+#UIColor
+<!-- uicolor:: -->
+色情報を管理するクラス
+
+~~~swift
+// 予め用意された色で生成
+let color = UIColor.redColor()
+
+//色の割合を指定して生成
+let color = UIColor(red:0.0,green:0.5,blue:1.0,alpha:1.0)
+
+// 画像をパターンとして生成
+view.backgroundColor = UIColor(patternImage: UIImage(named: "patternImage.png"))
+
+// "00ff88"のようなHexで色を指定するUIColor拡張
+extension UIColor {
+    class func hexStr (hexStr : NSString, alpha : CGFloat) -> UIColor {
+        let hexStr2 = hexStr.stringByReplacingOccurrencesOfString("#", withString: "")
+        let scanner = NSScanner(string: hexStr2 as String)
+        var color: UInt32 = 0
+        if scanner.scanHexInt(&color) {
+            let r = CGFloat((color & 0xFF0000) >> 16) / 255.0
+            let g = CGFloat((color & 0x00FF00) >> 8) / 255.0
+            let b = CGFloat(color & 0x0000FF) / 255.0
+            return UIColor(red:r,green:g,blue:b,alpha:alpha)
+        } else {
+            print("invalid hex string")
+            return UIColor.whiteColor();
+        }
+    }
+}
+
+let color = UIColor.hexStr("FFA73F", alpha:1.0)
 
 ~~~
 
 #座標指定 CGPoint CGRect CGFloat
+<!-- cgpoint:: cgrect:: cgfloat:: -->
 
-##CGFloat 浮動小数点
+###CGFloat 浮動小数点
 
 ~~~swift
 // 変数宣言
@@ -336,9 +808,15 @@ let int1 : Int = Int(pos_x)
 
 // CGFloatに変換
 pos_x = CGFloat(int1)
+
+// CGFloatとIntで計算ができない
+let posX : CGFloat = 10.0
+let num : Int = 3
+//let posX2 : CGFloat = posX * num  エラー
+let posX2 : CGFloat = posX * CGFloat(num)
 ~~~
 
-##CGPoint 座標
+###CGPoint 座標
 Make系はラベルなし
 
 ~~~swift
@@ -351,7 +829,7 @@ Make系はラベルなし
     view2!.frame.origin = pos2
 ~~~
 
-##CGRect 矩形の座標とサイズ
+###CGRect 矩形の座標とサイズ
 ~~~swift
     // CGRect を作成する
     let rect = CGRect(x:0, y:0, width:100, height:100)
@@ -367,5 +845,17 @@ UIViewはCALayer(.layerプロパティ)を持っている
 CALayerはUIViewの上に乗っている
 CALayerの座標を変えると、見た目の座標が変わる
 UIViewの座標はそのままにCALayerの座標や表示プロパティを変更することで見た目を変えることができる。
+
+#Autolayout
+
+##コードでAutolayoutを追加する
+[コードでAutolayout](http://qiita.com/bonegollira/items/5c973206b82f6c4d55ea)
+
+#便利
+
+###画面サイズを取得
+~~~swift
+let myBoundSize: CGSize = UIScreen.mainScreen().bounds.size
+~~~
 
 #注釈

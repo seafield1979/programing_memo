@@ -336,8 +336,21 @@ hoge3 += "あいむはっぴ"           // <- hoge3は"いえいあいむはっ�
   let y = 200.123
   let str = String(format: "%.4f %.4f", x, y)
 
-// 文字列の長さ
+// 文字列の長さ(count)
   str.characters.count
+
+// 分割(split)
+// 区切り文字を指定して文字列を分割する
+  let str = "hoge,hage,mage"
+  let array = str.componentsSeparatedByString(",")
+  // array -> ["hoge", "hage", "mage"]
+
+// 結合(join)
+// 区切り文字を指定して文字列の配列を結合する
+  let prefs = ["yamagata", "miyagi", "fukushima"]
+  let str = join(',', prefs)
+  // str -> "yamagata,miyagi,fukushima"
+
 ~~~
 
 ##正規表現処理クラス
@@ -377,9 +390,74 @@ class Regexp {
         return nil
     }
 }
+~~~
+
+#is と as
+###as
+<!-- is -->
+型チェック  
+インスタンスに対してチェックを行い、True/Falseを返す  
+`[インスタンス] is [チェックしたいクラス]`
+
+~~~swift
+let array : [Any] = ["text", 10, 20, "30"]
+for obj in array {
+    if obj is Int {
+        print("\(obj) is Int")
+    }
+    else if obj is String{
+        print("\(obj) is String")
+    }
+}
+~~~
+
+###is
+<!-- as -->
+
+ * インスタンスをダウンキャストする
+ * 数字=>文字列のような変換をするものではない
+ * 共通するベースクラスにアップキャストされたインスタンスをダウンキャストする場合に使用する
+ * as?とすると、変換が失敗した場合はnilを返すようにできる
+ * つけないと、失敗した場合ランタイムエラーになる
+
+~~~swift
+// 強制的にダウンキャストする。失敗した場合はランタイムエラー
+let [ダウンキャストされたインスタンス] = [インスタンス] as [ダウンキャスト先のクラス]
+// ダウンキャスを試みて、失敗した場合はnilを返す
+let [ダウンキャストされたインスタンス(失敗すればnilが入る)] = [インスタンス] as? [ダウンキャスト先のクラス]
+
+// Animalクラスとそれを継承したDog/Catクラスを用意する
+class Animal{
+
+}
+class Cat: Animal{
+    let say = "nya-"
+}
+class Dog: Animal{
+    let say = "wan wan"
+}
+
+// animalsの型はDogとCatの共通ベースクラスにアップキャストされたAnimal配列になる
+// let animals = [Dog(), Cat()] でも型推論で同じ動作になる
+let animals : Animal[] = [Dog(), Cat()]
+
+// animalは配列animalsの要素なので、型はAnimalとして扱われる
+for animal in animals {
+    // Animal型にアップキャストされているanimalをCatでダウンキャストするように試みる
+    if let cat = animal as? Cat {
+        // ダウンキャストされてCatのインスタンスとして扱えるので、sayプロパティが使える
+        println("Cat say \(cat.say)")
+
+    // 同様にDogにダウンキャストを試みる
+    } else if let dog = animal as? Dog {
+        println("Dog say \(dog.say)")
+    }
+}
 
 
 ~~~
+
+
 
 #配列 array
 <!-- array:: -->
@@ -661,7 +739,17 @@ newArray.forEach { print($0) }
     let item = (name:"ジュース", price:100, tax:0.08, priceWithTax:108)
 
     // 参照
-    print("商品名=\(item.name), 税抜き価格=\(item.price)円, 消費税=\(item.tax * 100)%, 税込み価格=\(item.priceWithTax)ｋ円")
+    item.name
+    item.price
+    
+###関数の戻り値としてタプルを返す
+    func getTuple() -> (name:String, age:Int) {
+      return ("shutaro", 36)
+    }
+
+    let tuple1 = getTuple()
+    tuple1.name
+    tuple1.age
 
 #関数 function
 <!-- function:: func:: -->
@@ -729,8 +817,8 @@ func hoge(a: Int){
 }
 hoge(100)
 
-//ただし、引数でvar宣言をしてあげるとエラーにならない。
-func hoge(var a: Int){
+//ただし、引数でinout宣言をしてあげるとエラーにならない。
+func hoge(inout a: Int){
   a = 200 // OK
 }
 hoge(100)
@@ -1135,7 +1223,6 @@ swiftのキャストは
 <!-- extension:: -->
 エクステンションは既存のクラス(標準クラスを含む)を拡張するための機能
 エクステンションの特徴
-  
   * 計算型プロパティと静的な計算型プロパティ（計算型の型プロパティ）を追加できる
   * インスタンスメソッドと型メソッドを追加できる
   * イニシャライザを追加できます。（追加できるのはコンビニエンスイニシャライザのみ）
@@ -1143,6 +1230,8 @@ swiftのキャストは
   * ネストした型を定義してそれを使うことができる
   * 新たなプロトコルに適合させることができる
 
+  エクステンションのファイル名は [拡張元のクラス]+[機能名].swift  
+    例: String+Regext.swift 
   エクステンションを使う場合は、次の様に型名の前にextensionキーワードをつけます。
 
 ~~~swift
@@ -1192,6 +1281,7 @@ print("hoge:" + 256.hoge().description)
 `pragma - mark` は swfitでは
 ~~~swift
 // MARK: - ここに説明 
+※MAKR と : の間にスペースを入れないこと
 ~~~
 のように記述する
 
