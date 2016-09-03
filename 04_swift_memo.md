@@ -207,6 +207,9 @@ for var cnt = 0; cnt < 10; cnt++ {
 for index in 1...5 {
     print("\(index) times 5 is \(index * 5)")
 }
+for index in 0 ..< 10 {
+    print("\(index)")
+}
 
 //高速列挙 (要素数を繰り返す)
 let names = ["Anna", "Alex", "Brian", "Jack"]

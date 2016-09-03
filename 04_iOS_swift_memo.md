@@ -137,6 +137,40 @@ view?.frame = CGRect(view?.frame!.origin.x,
 
 ~~~
 
+##UIScrollView
+<!-- uiscrollview:: -->
+スクロール可能なView。内部に表示領域より大きいView(サイズはcontentsize)を保持して、ContentOffsetで指定した位置から部分的に画面に表示する。
+
+![UIScrollView](http://sunsunsoft.com/image/ios/scrollview.png)
+
+~~~swift
+// UIScrollViewを作成
+let scrollView = UIScrollView( frame: CGRectMake( 0,0, self.view.frame.size.width, self.view.frame.size.height))
+
+// 全体の領域(viewのサイズよりも大きくするとスクロール可能になる)
+scrollView.contentSize = CGSizeMake(view.frame.size.width * CGFloat(pageMax), view.frame.size.height)
+
+scrollView.backgroundColor = .blueColor()
+
+// ページごとのスクロールにする
+scrollView.pagingEnabled = true;
+
+// ステータスバータップでトップにスクロールする機能をOFFにする
+scrollView.scrollsToTop = false;
+
+// delegateメソッドを使用できるようにする
+scrollView.delegate = self
+
+// 親viewに追加
+self.view.addSubview(scrollView)
+
+// UIScrollViewDelegateメソッド
+// スクロール時の処理（スクロール中に毎フレーム呼ばれる）
+func scrollViewDidScroll( scrollView: UIScrollView) {
+    // 現在のページ数を UIPageControl に設定
+    print("\(scrollView.contentOffset.x) :  \(scrollView.contentOffset.y)")
+}
+~~~
 
 ##UILabel
 <!-- uilabel:: -->
@@ -850,6 +884,170 @@ UIViewの座標はそのままにCALayerの座標や表示プロパティを変�
 
 ##コードでAutolayoutを追加する
 [コードでAutolayout](http://qiita.com/bonegollira/items/5c973206b82f6c4d55ea)
+
+###サンプル
+####1つづつ制約を追加する
+NSLayoutConstraintオブジェクトを作成し、.addConstraint メソッドで１つづつ制約を追加する
+
+~~~swift
+// view1
+let view1 = UIView(frame: CGRectMake(50, 50, 100, 50))
+view1.backgroundColor = .redColor()
+
+// 先にaddSubviewしないと制約を追加できない
+view.addSubview(view1)
+
+view1.translatesAutoresizingMaskIntoConstraints = false
+
+// Top
+let topConstraint = NSLayoutConstraint(
+    item: view1,
+    attribute: .Top,
+    relatedBy: .Equal,
+    toItem: self.view,
+    attribute: .Top,
+    multiplier: 1.0,
+    constant: 100
+)
+
+// Left
+let leftConstraint = NSLayoutConstraint(
+    item: view1,
+    attribute: .Left,
+    relatedBy: .Equal,
+    toItem: self.view,
+    attribute: .Left,
+    multiplier: 1.0,
+    constant: 10
+)
+
+// Width
+let widthConstraint = NSLayoutConstraint(
+    item: view1,
+    attribute: .Width,
+    relatedBy: .Equal,
+    toItem: self.view,
+    attribute: .Width,
+    multiplier: 0,
+    constant: 100
+)
+
+// Heigth
+let heightConstraint = NSLayoutConstraint(
+    item: view1,
+    attribute: .Height,
+    relatedBy: .Equal,
+    toItem: self.view,
+    attribute: .Height,
+    multiplier: 0,
+    constant: 100
+)
+
+view.addConstraint(topConstraint)
+view.addConstraint(leftConstraint)
+view.addConstraint(widthConstraint)
+view.addConstraint(heightConstraint)
+~~~
+
+####まとめて制約を追加する
+.addConstraintsでまとめて制約を追加する
+~~~swift
+view1.translatesAutoresizingMaskIntoConstraints = false
+
+// Top
+view.addConstraints([
+    NSLayoutConstraint(
+        item: view1,
+        attribute: .Top,
+        relatedBy: .Equal,
+        toItem: self.view,
+        attribute: .Top,
+        multiplier: 1.0,
+        constant: 100
+    ),
+    NSLayoutConstraint(
+        item: view1,
+        attribute: .Left,
+        relatedBy: .Equal,
+        toItem: self.view,
+        attribute: .Left,
+        multiplier: 1.0,
+        constant: 120
+    ),
+
+    NSLayoutConstraint(
+        item: view1,
+        attribute: .Width,
+        relatedBy: .Equal,
+        toItem: self.view,
+        attribute: .Width,
+        multiplier: 0,
+        constant: 100
+    ),
+
+    NSLayoutConstraint(
+        item: view1,
+        attribute: .Height,
+        relatedBy: .Equal,
+        toItem: self.view,
+        attribute: .Height,
+        multiplier: 0,
+        constant: 100
+    )]
+)
+~~~
+
+####いろいろな制約
+~~~swift
+
+// Top/Bottom/Left/Right Space
+// Viewの上下左右にスペースをもうける
+let constraint1 = NSLayoutConstraint(
+    item: view1,        // 制約を追加するView
+    attribute: .Top,    // .Top / .Bottom / .Left(.Leading) / .Right(.Tailing)
+    relatedBy: .Equal,
+    toItem: self.view,   // 基準となるView
+    attribute: .Top,
+    multiplier: 1.0,    // 1.0固定
+    constant: 100       // スペースのピクセル数
+)
+
+// Width/Height
+// 幅、高さを固定値で設定
+let constraint2 = NSLayoutConstraint(
+    item: view1,    // 制約を追加するView
+    attribute: .Width,    // .Width / .Height
+    relatedBy: .Equal,
+    toItem: self.view,    // 基準となるView
+    attribute: .Width,
+    multiplier: 0,        // 0: constantの値の幅(高さ) / 0以外: toItemのViewの幅(高さ)の割合(0.5:50%, 1.0: 100%)
+    constant: 100         // ピクセル数
+)
+
+// 基準Viewの幅、高さの割合(%)を指定
+let constraint3 = NSLayoutConstraint(
+    item: view1,    // 制約を追加するView
+    attribute: .Width,    // .Width / .Height
+    relatedBy: .Equal,
+    toItem: self.view,    // 基準となるView
+    attribute: .Width,
+    multiplier: 0.5,        // 基準となるViewの何%の幅(高さにするか)
+    constant: 0            // ０固定
+)
+
+// センタリング
+// 基準位置にViewの中心を合わせる
+let centerX = NSLayoutConstraint(
+    item: view1,
+    attribute: .CenterY,  // 中心(垂直)
+    relatedBy: .Equal,
+    toItem: self.view,
+    attribute: .CenterY,
+    multiplier: 1.0,        // センタリング位置 1/2:全体の1/4, 1.0:中央, 3/2:全体の3/4
+    constant: 0             // オフセット センタリング位置からどれだけずらすか
+)
+
+~~~
 
 #便利
 
