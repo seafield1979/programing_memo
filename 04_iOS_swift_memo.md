@@ -48,13 +48,32 @@ window = UIWindow(frame:UIScreen.mainScreen().bounds)
 ###
 
 #UIViewController
+<!-- uiviewcontroller:: -->
 ###画面に表示する
 windowのトップにViewControllerを表示する  
 
 ~~~swift
 // UIViewControllerを生成して画面に貼り付ける(※ただしUIViewの色を変えないと見た目の変化なし)
-let viewController : UIViewController = UIViewController()
+let viewController : UIViewController()
+viewController.backgroundColor = .grayColor()
 window!.rootViewController = viewController
+
+// xibファイルを元にViewControllerを生成する
+// MyViewController は UIViewControllerのサブクラス
+let viewController2 = MyViewController(nibName: "MyViewController", bundle: nil);
+~~~
+
+###デフォルトのviewをコードで生成する
+スクリーンと同じサイズのUIViewを生成して viewに設定
+これで画面サイズの異なるデバイスでも画面サイズとviewのサイズが一致する
+~~~swift
+class MyViewController : UIViewController {
+
+override func loadView() {
+    self.view = UIView(frame: UIScreen.mainScreen().bounds)
+}
+
+}
 ~~~
 
 ###xibファイルから生成
@@ -68,6 +87,306 @@ self.viewController = ViewController(nibName: "ViewController", bundle: nil)
 ~~~
 
 ###UIViewControllerを切り替える
+
+
+#UINavigationController
+<!-- uinavigationcontroller:: -->
+NavigationControllerはViewControllerの上部にバー(NavigationBar)を表示したり、複数のViewControllerをスタックしたりできる。
+
+NavigationControllerにViewControllerを表示させたところ。NavigationBarにはタイトル、左ボタン、右ボタンを表示できる。
+![UINavigationController3](http://sunsunsoft.com/image/ios/navigationcontroller3.png)
+
+ViewControllerをスタックしたケース。前のViewControllerに戻るためのボタンがNavigationBarの左側に表示されている。  
+![UINavigationController2](http://sunsunsoft.com/image/ios/navigationcontroller2.png)  
+
+
+##UINavigationControllerでできること
+
+##プロパティ、メソッド
+**UINavigationController**
+
+|メソッド・プロパティ|説明|
+|---|---|
+pushViewController(viewController: UIViewController, animated: Bool) | ViewControllerをPushする(新しいページ)
+popViewControllerAnimated(animated: Bool) -> UIViewController? | ViewControllerをPopする(前のページ)
+topViewController : UIViewController | 一番先頭のViewControllerを返す
+viewControllers : [UIViewController] | 保持しているViewControllerの配列
+navigationBarHidden | NavigationBarの表示状態を返す
+navigationBar | NavigationBar
+
+**UIViewController**
+
+|メソッド・プロパティ|説明|
+|---|---|
+title | ナビゲーションバーに表示するタイトルを設定する
+navigationController | UINavigationControllerを取得する（NavigationControllerで表示されている場合のみ有効)
+navigationItem | NavigationBar項目のセット
+
+**UINavigationBar**
+ナビゲーションバー
+
+|メソッド・プロパティ|説明|
+|---|---|
+tintColor | ナビゲーションバーの色を設定する
+barStyle | UIBarStyle<br>.Default：灰色<br>.Black：黒色<br>.BlackTranslucent:黒透明
+
+**UINavigationItem**
+Navigationに表示する項目。タイトルや左右のボタンなどはこのクラスのサブクラス  
+
+|メソッド・プロパティ|説明|
+|---|---|
+title | タイトルに表示する文字列
+titleView | タイトル部分に表示するUIView
+backBarButtonItem | 前のViewControllerに戻るUIBarButtonItem
+leftBarButtonItem | バーの左側に表示されるボタン(backBarButtonItemが表示されている時はかぶるので使用しない)
+rightBarButtonItem | バーの右側に表示されるボタン
+
+##サンプルコード
+
+**生成**  
+UINavigationControllerを生成する場合は、そこに表示するUIViewControllerを生成する。
+
+~~~swift
+let viewController1 = ViewController(nibName: "ViewController", bundle: nil)
+let navigationController = NavigationController1(rootViewController: viewController1!)
+window!.rootViewController = navigationController
+~~~
+
+**その他**
+~~~swift
+// push
+// 新しいViewControllerを生成し、それを表示する
+let viewController = ViewController(nibName: "ViewController", bundle: nil)
+self.navigationController?.pushViewController(viewController, animated: true)
+
+// スタックに積まれたViewControllerのうち、指定のViewControllerの場所までpopする 
+self.navigationController?.popToViewController(viewController1, animated: true)
+
+// ルートまでpopする
+self.navigationController?.popToRootViewControllerAnimated(true)
+
+override func viewDidLoad()
+{
+    // タイトルの文字列を変更
+    self.title = "hoge"
+
+    // タイトルのViewを変更
+    self.navigationItem.titleView = UIImageView(image: UIImage(named: "image/hoge.png"))
+    
+    // バーのスタイルを変更
+    self.navigationController!.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+
+    // ナビゲーションを透明にする
+    self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+    self.navigationController!.navigationBar.shadowImage = UIImage()
+
+    // バーの背景色(半透明)
+    self.navigationController!.navigationBar.tintColor = .greenColor()
+        
+    // バーの背景色(半透明なし)
+    self.navigationController!.navigationBar.barTintColor = .greenColor()
+        
+    // 戻るボタンのテキスト変更
+    let backButtonItem = UIBarButtonItem(title: "< 戻る", style: .Plain, target: nil, action: nil)
+    navigationItem.backBarButtonItem = backButtonItem
+
+    // 戻るボタンの背景画像
+    UIBarButtonItem.appearance().setBackButtonBackgroundImage(UIImage(named: "Back"), forState: .Normal, barMetrics: .Default)
+
+    // バーの右にテキストボタンを追加
+    let debugBarButton = UIBarButtonItem(title: "Debug", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(self.debugButtonTapped(_:)))
+    self.navigationItem.leftBarButtonItem = debugBarButton
+
+    // UIImageからバーのボタンを作成、設定する
+    let barButton = UIBarButtonItem(image: UIImage(named:"image/hoge2.png"), style: UIBarButtonItemStyle.Plain, target: self, action: #selector(self.buttonTapped(_:)))
+    self.navigationItem.rightBarButtonItem = barButton
+
+    // UIView(とそのサブクラス)からボタンを作成、設定する
+    let imageView = UIImageView(image: UIImage(named:"image/hoge.png"))
+    let barButton = UIBarButtonItem(customView: imageView)
+}
+
+#UITableViewController
+<!-- uitableviewcontroller:: -->
+
+##基礎
+NSIndexPath  
+セルのセクション番号と行番号を保持する
+  * section  セクション
+  * row  行
+
+##サンプルコード
+|プログラム|説明|
+|-----|-----|
+[SimpleTableViewController.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController/ViewController/TableView/SimpleTableViewController.swift) | セルを表示するだけのシンプルなTableView
+[SimpleTableViewController2.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController/ViewController/TableView/SimpleTableViewController2.swift) | セクションとセルを表示するシンプルなTableView
+[TableViewController.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController/ViewController/TableView/TableViewController.swift) | セクションやセルに自前のxibを表示する
+[EditableTableViewController.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController/ViewController/TableView/EditableTableViewController.swift) | セルを移動、削除できるTableView
+
+###シンプルなUITableViewController
+自前のセルを使わないシンプルなUIViewControllerのサンプル
+
+**ファイルを追加**  
+XCodeでファイルを追加  
+
+~~~swift
+SimpleTableViewController.swift
+
+class SimpleTableViewController: UITableViewController {
+    
+    let cellNum = 30
+    let cellHeight : CGFloat = 80.0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // ステータスバーの上にUITableViewが表示されないように位置をずらす
+        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+        self.tableView.contentInset.top = statusBarHeight
+
+    }
+
+    // MARK: - UITableViewDelegate
+
+    // セクション数を返す
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+
+    // 行数を返す
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return cellNum
+    }
+    
+    // セルを返す
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
+        // デフォルトで用意されたセルを返す
+        let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MyTestCell")
+        cell.textLabel!.text = "hoge selction:\(indexPath.section) : row:\(indexPath.row)"
+        cell.detailTextLabel!.text = "detail"
+        
+        // １つおきに色を変える
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = .grayColor()
+        }
+        return cell
+
+    }
+    
+    // MARK: - UITableViewDelegate
+    
+    // セルの高さを返す
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    {
+        return cellHeight
+    }
+}
+
+AppDelegate.swift
+
+func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+{
+    window = UIWindow(frame:UIScreen.mainScreen().bounds);
+    simpleTableViewController = SimpleTableViewController()
+    window!.rootViewController = simpleTableViewController
+}
+~~~
+
+https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController/ViewController/TableView/EditableTableViewController.swift
+
+
+###自前のxibのCellを使用する
+
+UITableViewにxibでデザインしたセルを使用する方法
+
+UITableViewでできること
+
+ * テーブルを表示する
+ * セル（テーブルに表示されるデータ）をカスタマイズできる
+ * セクションのヘッダーとフッターを表示できる（セクション１、セクション１のデータ、セクション２、セクション２のデータ〜のような表示順になる）
+ * テーブルに表示するセルは自前でデザインしたものを使用できる
+ * テーブルの行を追加、削除できる
+ * テーブルの行の並び替えができる
+
+
+**ファイルを追加する**  
+  [iOS] - [Cocoa Touch Class] で　Next  
+
+  ![UITableViewCell1](http://sunsunsoft.com/image/ios/uitableviewcell_1.png)
+
+  * Class:  [適当なCell名]
+  * Subclass of : UITableViewCell
+  * Also create XIB file をチェック
+  * で Next、ファイル作成場所を選択してから Create
+  * これで UITableViewCell のサブクラス(今回はHogeCellクラス)のswfitファイルと、xibファイルが作成される
+
+  ![UITableViewCell1](http://sunsunsoft.com/image/ios/uitableviewcell_2.png)
+
+**xibを編集**
+    2で作成しそのままだと何も表示されないので、UILabelを配置する(->label1)。
+    label1を HogeCellのクラスに連結する
+
+  [![UITableViewCell1](http://sunsunsoft.com/image/ios/uitableviewcell_3.png)](http://sunsunsoft.com/image/ios/uitableviewcell_3.png)
+
+
+**ソース編集**
+
+~~~swift
+class MyViewController: UITableViewController {
+
+override func viewDidLoad() {
+...
+    // セル用のxibを登録する
+    let nib = UINib(nibName: "HogeCell", bundle: nil)
+
+    // registerNibで登録 forCellReuseIdentifierの名前はなんでもOK
+    self.tableView.registerNib(nib, forCellReuseIdentifier: "cell1")
+}
+
+// UITableViewControllerのセルを返すメソッド
+override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+{
+    // 自前の
+    let cell = tableView.dequeueReusableCellWithIdentifier("cell1", forIndexPath: indexPath) as! MyTableViewCell
+    
+    // HogeCellに配置したラベル(label1)にテキストを設定する
+    cell.label1.text = "hoge selction:\(indexPath.section) : row:\(indexPath.row)"
+    return cell
+}
+~~~
+
+###デリゲートメソッド
+
+**UITableViewDataSource**  
+テーブルの表示に必須な情報を取得するメソッド。UITableViewControllerにどのような情報をどれだけ表示したら良いかを教えてあげる。主にテーブルがロード時に呼ばれる。
+
+|メソッド|説明|
+|!--|!--|
+numberOfSectionsInTableView(tableView: UITableView) -> Int | セクション数を返す（ロード時）
+tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int | (指定セクションの）行数を返す
+tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell | セルを返す
+tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? | セクションヘッダーのタイトルを返す
+tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? | セクションフッターのタイトルを返す
+
+**UITableViewDelegate**  
+主に表示系の情報を返すメソッド
+
+|メソッド|説明|
+|!--|!--|
+tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat | セルの高さを返す
+tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat | セクションヘッダーの高さを返す
+tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat | セクションフッターの高さを返す
+tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) | セクションヘッダーの表示(背景色等)を設定する
+tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) | セクションフッターの表示(背景色等)を設定する
+
+
+###UITableViewがステータスバーと重なる問題の対応
+override func viewDidLoad() {
+    // これを追加する
+    self.tableView.contentInset.top = 50
+}
+
 
 #UIView(とそのSubClass)
 <!-- uiview:: -->

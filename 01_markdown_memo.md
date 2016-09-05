@@ -323,6 +323,13 @@ function hoge(){
   ![代替テキスト](http://www.sunsunsoft.com/image/miro2_s.jpg "ミロ")  
   画像にマウスカーソルを合わせると画像タイトルが表示される
 
+####リンク付き画像
+~~~
+  [![代替テキスト](画像のリンク)](リンク)
+~~~
+  例:
+  [![代替テキスト](http://www.sunsunsoft.com/image/miro2_s.jpg)](http://www.sunsunsoft.com/image/miro2_s.jpg)
+
 ##Qiita拡張マークダウン
 以下のマークダウンはQiita拡張。QiitaやKobitoでのみ使用できる。
 

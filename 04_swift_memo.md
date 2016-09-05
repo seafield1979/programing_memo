@@ -1011,7 +1011,8 @@ class Child1 : Parent1 {
 class Hage : Hoge {
   override init(){}
   override func hogehoge(){    // <- メソッド名の前に"override"をつけるべし
-    
+    // 親クラスの機能を呼び出したい場合は
+    // super.メソッド名()
   }
 }
 ~~~
