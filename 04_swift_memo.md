@@ -456,8 +456,6 @@ for animal in animals {
         println("Dog say \(dog.say)")
     }
 }
-
-
 ~~~
 
 
@@ -941,9 +939,10 @@ class クラス名{
 
   }
 
-
   // クラスの判定（特定のクラスかどうか） Objective-cのisMemberOfClass:メソッドと同じ
   if sub1.dynamicType === SubClass.self
+
+  例 hoge.dynamicType == HogeClass.self
 
 
   // 同一インスタンスの判定
@@ -1420,12 +1419,22 @@ Swiftのenumは型を指定できる。他の言語のenumは整数値しかも�
       case Red        // 赤
   }
 
+  enum Signal : Int {
+      case Blue=1
+      case Yellow=2
+      case Red=3
+  }
+
   // 文字列を返す
   enum SignalStr : String {
       case Blue = "青"
       case Yellow = "黄"
       case Red = "赤"
   }
+
+  // 整数型enum変数に整数値を代入する方法
+  let signal = Signal.init(rawValue:1)!
+
 ~~~
 
 ##メソッドを定義
@@ -1595,6 +1604,86 @@ print(test1[0])  // 222
 print(test1[1])  // 111
 ~~~
 
+#例外処理
+<!-- exception:: try:: -->
+例外処理の発生とそのキャッチ  
+[Swift 2.0 エラー処理入門](http://qiita.com/koishi/items/67cf4d0f51c4d79f1d22)
+
+
+ * エラーを投げるメソッドが定義できる
+ * エラーの種類をenumで定義できる
+ * エラーを投げるメソッドを呼び出す場合は先頭に try をつける
+ * エラーを投げるメソッドは do ブロックの中で呼び出さなければならない
+ * エラーが発生した時にcatchブロックに処理がとぶ、ここでエラーに合わせた適切な処理をおこなう
+
+~~~swift
+// エラー定義
+throwされるエラーを定義する
+enum MyError : ErrorType {
+    case Error1
+    case Error2
+    ...
+}
+
+// エラーを投げるメソッド定義
+// メソッド定義の最後に throws をつける
+func hogeFunc(num : Int) throws{
+  if num > 100 {
+    // throw で enumで定義したエラーを投げる
+    throw MyError.Erro1
+  } eles if num < 0 {
+    throw MyError.Error2
+  }
+}
+
+// do~catch
+// throws をつけて定義したメソッドを呼び出す場合は、メソッドの先頭に tryをつけて呼び出す
+
+// do ブロックの中でthrowsをつけたメソッドを呼び出す
+do {
+    // throwsをつけたメソッドを呼び出す場合は try をつける
+    try hogeFunc(1)
+    try hogeFunc(-1)
+    try hogeFunc(101)
+}
+catch MyError.HogeError1 {
+    print("HogeError1 value is too low")
+}
+catch MyError.HogeError2 {
+    print("HogeError2 value is too large")
+}
+catch {
+    print("Unkwnon Error")
+}
+
+// do~catch不要の書き方
+// throwsをつけたメソッドでも、try? をつけて呼び出せばdo~catchブロックで囲まなくてOK
+
+//try? do~catch が不要になる  エラー発生時、エラーを無視
+  try? hogeFunc(1)
+//try! do~catch が不要になる  エラー発生時、クラッシュ
+  try! hogeFunc(1)
+
+
+// defer doブロック処理の後に実行したい処理のブロック
+do {
+    defer {
+        // エラーがあろうがなかろうが、最後に必ず実行される処理
+        print("Fix defer")
+    }
+    try hogeFunc(1)
+    try hogeFunc(101)
+    defer {
+        // エラーが起きなかった場合のみ、最後に実行される処理
+        print("No error defer")
+    }
+}
+catch {
+    print("Error!!")
+}
+
+~~~
+        
 #標準のクラスを拡張する
 swiftでは既存のクラス（標準クラスを含む）
 
@@ -1749,20 +1838,13 @@ Swiftではクラスや構造体、列挙型の定義の中に、さらにクラ
 
 
 #Objective-Cの移植
-  AppDelegateのオブジェクトを取得
-  let app = UIApplication.sharedApplication().delegate as! AppDelegate;
 
-  //新しい
-~~~swift
-//[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-window = UIWindow(frame:UIScreen.mainScreen().bounds);
+##NSClass
 
-//self.viewController1 = [[UNViewController1 alloc]initWithNibName:@"UNViewController1" bundle: nil];
-viewController1 = ViewController(nibName: "ViewController", bundle: nil);
+[Swiftの配列の書き方をObjective-cと比較しながらまとめる](http://qiita.com/kkoide1332/items/8a64011a1a5e0965066f)
 
-//self.window.rootViewController = self.viewController1;
-window!.rootViewController = viewController1;
+##Array(swift)とNSArray(Objective-C)の違い
+###参照渡しか値渡しか
+swiftは値渡し。変数値を別変数に設定するときに値をコピーしてから渡す。コピー元の変更がコピー先の変数に影響しない
+objCは参照渡し。変数値を別変数値に設定する時にコピーを作らない。コピー元の変数がコピー先の変数に影響する。
 
-//[self.window makeKeyAndVisible];
-window?.makeKeyAndVisible();
-~~~

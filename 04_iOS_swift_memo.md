@@ -10,9 +10,14 @@
 #リンク
 [日本語に翻訳されたiOS/watchOS/tvOSのドキュメント](https://developer.apple.com/jp/documentation/)
 
-$x^2 + y^2 = 1$  
-$a = \{1, 2, 3\}$  
-$a = \\{1, 2, 3\\}$  
+#Todo
+
+* ファイルの読み書きƒ
+* UITabBarController
+* 自前の画像作成
+* UIActionSheet(選択肢つきポップアップ)
+* UIAlertView(メッセージ)
+* 実機でデバッグ(iPhone,iPad)
 
 #プログラム作成
 ###プロジェクトを作ったやら最初にすること(storyboardを使わない方法)
@@ -101,6 +106,10 @@ ViewControllerをスタックしたケース。前のViewControllerに戻るた�
 
 
 ##UINavigationControllerでできること
+
+* ナビゲーションバーにタイトル、ボタンを表示できる
+* 画面をpush(前のページを保持しつつ新しいページを表示)
+* 画面をpop(pushで進んだ画面を１つ前の画面に戻す)
 
 ##プロパティ、メソッド
 **UINavigationController**
@@ -205,9 +214,11 @@ override func viewDidLoad()
     let imageView = UIImageView(image: UIImage(named:"image/hoge.png"))
     let barButton = UIBarButtonItem(customView: imageView)
 }
+~~~
 
 #UITableViewController
 <!-- uitableviewcontroller:: -->
+表示データが上下に並んだリストを管理する。
 
 ##基礎
 NSIndexPath  
@@ -300,7 +311,7 @@ https://github.com/seafield1979/ios_programing/blob/develop/swift/ViewController
 
 UITableViewにxibでデザインしたセルを使用する方法
 
-UITableViewでできること
+UITableViewControllerでできること
 
  * テーブルを表示する
  * セル（テーブルに表示されるデータ）をカスタマイズできる
@@ -1367,6 +1378,7 @@ let centerX = NSLayoutConstraint(
 )
 
 ~~~
+
 
 #便利
 
