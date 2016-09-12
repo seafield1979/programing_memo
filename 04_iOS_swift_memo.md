@@ -12,12 +12,17 @@
 
 #Todo
 
-* ファイルの読み書きƒ
-* UITabBarController
-* 自前の画像作成
-* UIActionSheet(選択肢つきポップアップ)
-* UIAlertView(メッセージ)
+* Webサーバーと通信
+* カメラのテスト
+* MapViewのテスト
+* 高速画像描画 SpriteKit のテスト
 * 実機でデバッグ(iPhone,iPad)
+
+//* 自前の画像作成(CGContext)
+//* UITabBarController
+// * UIActionSheet(選択肢つきポップアップ)
+// * UIAlertView(メッセージ)
+//* ファイルの読み書き
 
 #プログラム作成
 ###プロジェクトを作ったやら最初にすること(storyboardを使わない方法)
@@ -405,6 +410,26 @@ override func viewDidLoad() {
 
 ##UIView
 
+###プロパティ・メソッド
+**プロパティ**
+
+|プロパティ名|説明|
+|---|---|
+superview UIView? | 親View
+subviews [UIView] | 子View
+tag (Int) | 識別用のタグ
+hidden (Bool) | trueならViewを非表示
+
+**メソッド**
+
+|メソッド|説明|
+|---|---|
+addSubview() | 子Viewを追加する
+removeFromSuperview() | 親Viewから自身を削除する
+drawRect(rect : CGRect) | 図形を描画する
+
+
+
 ###メインViewを画面サイズと同じにする
 ~~~swift
 class MyViewController {
@@ -621,12 +646,64 @@ self.view.addSubview(pageControl)
 ~~~
 
 ##UIPickerView
+<!-- pickerview:: -->
 ドラムロール式の項目選択View。複数のドラムロールを持たせることも可能  
 ![UIPickerView](http://sunsunsoft.com/image/ios/pickerview.png)
 
 deleteを使用して実現しているのでサンプルのボリュームが大きい。以下のプロジェクトを参照する。  
 [github: PickerViewController.swift](https://github.com/seafield1979/ios_programing/blob/develop/swift/UIViewTest/UIViewTest/ViewController/PickerViewController.swift)
 
+|プロパティ|説明|
+|---|---|
+selectedRowInComponent(component: Int) -> Int | 指定セクションの選択番号を取得 
+
+**テンプレート**
+
+~~~swift
+class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+
+    @IBOutlet weak var picker1: UIPickerView!
+    
+    private let pickerTitles: NSArray = [
+        "hoge1","hoge2", "hoge3", "hoge4"
+    ]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        picker1.delegate = self
+        picker1.dataSource = self
+    }
+    
+    // MARK: UIPickerViewDataSource
+    // pickerに表示する列数を返すデータソースメソッド.
+    // (実装必須)
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int
+    {
+        return 1
+    }
+
+    //pickerに表示する行数を返すデータソースメソッド.
+    // (実装必須)
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int
+    {
+        return pickerTitles.count
+    }
+    
+    // MARK: UIPickerViewDelegate
+    // pickerに表示する値を返すデリゲートメソッド.
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?
+    {
+        return pickerTitles[row] as? String
+    }
+    
+    // pickerが選択された際に呼ばれるデリゲートメソッド.
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        print("row: \(row)\n value: \(pickerTitles[row])")
+    }
+}
+~~~
 
 ##UISegmentedControl
 複数の選択項目のうち１つだけ選択できるコントロール
@@ -1111,6 +1188,11 @@ func buttonTapped(sender: UIButton) {
 
 #UIImage
 <!-- uiimage:: -->
+
+リンク
+[文字列からUIImageオブジェクトを生成する](http://ios.ch3cooh.jp/entry/20140730/1406694860)  
+
+
 ##生成
 ~~~swift
 // プロジェクトに登録済みの画像ファイルを元にUIImageを生成

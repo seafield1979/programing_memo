@@ -113,28 +113,47 @@ php_test.html
 ~~~
 
 ###PHPのログを出力する
+
+**エラーログ出力メソッド**
+~~~swift
+//　エラーログ出力
+error_log("hogehoge");
+
+// 任意のファイルにし出力 (第2引数に3を設定)
+error_log("hoge","3","./error.log");
+
+// 標準出力をしないprint_rを使う
+error_log(print_r($array1, true));
+~~~
+
 <!-- log:: logs::  -->
-　php.iniの設定
+**php.iniの設定**
 ~~~ini
-###htmlにエラーを出力するかどうか
+;htmlにエラーを出力するかどうか
 display_errors = On/Off
   
-###ログの出力レベル
+;ログの出力レベル
 error_reporting = E_ALL | E_STRICT
 
-###ファイルに出力
+;ファイルに出力
 log_errors = On/Off
 
-###エラーログのパス
+;エラーログのパス
 error_log = /var/log/php/error.log
 ~~~
 
-###ログの出力(tailを使用して常に監視)  
+**ログの出力(tailを使用して常に監視)**  
 `$tail -50f /var/log/php/error.log`
 
-※php.iniの変更を反映させるためにはApacheをリスタートする  
+**php.iniの変更を反映させるためにはApacheをリスタートする**  
 `$sudo apachectl restart`
 
+**自前のログ出力メソッドを使う**
+~~~php
+<?php
+
+?>
+~~~
 
 ##MySQLでデータベースを操作する
   既にphpとMySQLが使用できる状態にしてある前提で進める
@@ -571,6 +590,13 @@ require_once:
       }
       echo "key=${key} value=${value}\n";
     }
+
+| header1 | header2 |
+| !--1 | !--2 |
+aaa | bbb
+ccc | ddd
+eee | fff
+
 
 ##while
 <!-- while:: -->
