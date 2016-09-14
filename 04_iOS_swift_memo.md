@@ -7,10 +7,12 @@
 <!-- もくじ -->
 [TOC]
 
-#リンク
+**リンク**
+<!-- link:: -->
 [日本語に翻訳されたiOS/watchOS/tvOSのドキュメント](https://developer.apple.com/jp/documentation/)
 
-#Todo
+**Todo**
+<!-- todo:: -->
 
 * Webサーバーと通信
 * カメラのテスト
@@ -24,30 +26,6 @@
 // * UIAlertView(メッセージ)
 //* ファイルの読み書き
 
-#プログラム作成
-###プロジェクトを作ったやら最初にすること(storyboardを使わない方法)
-
-* プロジェクトの Main.storyboard を削除
-* Info.plist内のMain storyboard file base nameの値を空白にする
-* General - Deployment Info 内のMain Interfaceの値を空白にする
-* AppDelegate.swiftに以下のコードを記述する
-
-~~~swift
-func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
-{
-    window = UIWindow(frame:UIScreen.mainScreen().bounds)
-    
-    // 最初に表示されるViewControllerを生成
-    let viewController = UIViewController()
-    
-    // Viewの色を変える
-    viewController.view.backgroundColor = UIColor.yellowColor()
-    
-    window!.rootViewController = viewController
-    window!.makeKeyAndVisible();
-    return true
-}
-~~~
 
 #UIWindow
 ###Windowを取得する
@@ -1172,7 +1150,7 @@ self.view.addSubview(myView)
     - CustomViewを生成、viewに追加する
     - CustomViewのIBOutlet、IBActionを設定
 
-#ジェスチャー
+#ジェスチャー gesture
 ###ジェスチャーを追加する方法
 ソースコードだけで view1:UIView をタップした時の処理を追加。
 
@@ -1258,7 +1236,7 @@ func buttonTapped(sender: UIButton) {
 }
 ~~~
 
-#ストレージ
+#ストレージ storage
 <!-- file::　storage::  -->
 アプリを終了してもデータを保持できる仕組み
 
@@ -2268,7 +2246,31 @@ echo json_encode(
 ?>
 ~~~
 
-#便利・小技
+#便利・小技 skills
+
+###storyboardを使わないプログラムテンプレート
+
+* プロジェクトの Main.storyboard を削除
+* Info.plist内のMain storyboard file base nameの値を空白にする
+* General - Deployment Info 内のMain Interfaceの値を空白にする
+* AppDelegate.swiftに以下のコードを記述する
+
+~~~swift
+func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+{
+    window = UIWindow(frame:UIScreen.mainScreen().bounds)
+    
+    // 最初に表示されるViewControllerを生成
+    let viewController = UIViewController()
+    
+    // Viewの色を変える
+    viewController.view.backgroundColor = UIColor.yellowColor()
+    
+    window!.rootViewController = viewController
+    window!.makeKeyAndVisible();
+    return true
+}
+~~~
 
 ###画面サイズを取得
 ~~~swift
