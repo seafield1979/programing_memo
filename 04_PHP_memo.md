@@ -237,6 +237,17 @@ error_log = /var/log/php/error.log
   var_dump($array1);
   $str = ob_get_contents();
   ob_end_clean();
+
+// 標準出力を指定のファイル test.txt に出力
+ob_start(); //バッファリング開始
+echo "これはテスト用文字列です。";   //ここでは出力されない
+$output = ob_get_contents();        //出力されるはずだったデータを取得
+ob_end_clean();                     //本来出力されるはずのデータをクリア(これをしないと実行終了時に出力されてしまう)
+
+//上で取得した$outputをファイル(test.txt)に出力する
+$fp = fopen('test.txt', 'w');
+fwrite($fp, $output);
+fclose($fp);
 ~~~
 
 #基本 basic
@@ -460,7 +471,13 @@ $pos = strpos("hoge123", "123");
 // 文字列の切り取り
 // string substr(string string, int start [, int length])
 // 切り取った文字列 substr("分割対象の文字列", 開始位置 [, 切り取る長さ])
-$str2 = substr("hogehoge123", 4);   // $str2 = "hoge123"
+$str2 = substr("hogehoge123", 4);   // $str2 = "hoge123"分割
+
+// 指定文字列で分割
+// 文字列内にある特定の文字列で分割する
+// array explode ( string $delimiter , string $string [, int $limit = PHP_INT_MAX ] )
+// 例:  aaa,bbb,ccc 
+$array = explode(",", "aaa,bbb,ccc", )
 ~~~
 
 ###パターンマッチ preg_match
@@ -1562,6 +1579,9 @@ $dom = phpQuery::newDocument($html);
 // htmlテキストから生成 (newDocumentと同じ？)
 $html = get_file_contents("hoge1.html");
 $dom = phpQuery::newDocumentHTML($html);
+
+// domオブジェクトをテキストに変換
+$htmlStr = (string)$dom;
 ?>
 ~~~
 
