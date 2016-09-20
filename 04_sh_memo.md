@@ -116,6 +116,19 @@ hello world!!
 $ helloworld.sh  
 -bash: helloworld.sh: command not found
 ~~~
+
+#シェルへの引数 args
+<!-- args:: -->
+$@  #配列形式  
+
+全引数を参照するループ
+~~~sh
+for arg in $@
+do
+    echo ${arg}
+done  
+~~~
+
 #変数 variable
 <!-- var:: variable:: -->
 
@@ -139,6 +152,13 @@ $ helloworld.sh
 abc=100
 str="hello"
 
+###変数の参照  
+`$変数名 or ${変数名}`
+~~~sh
+echo $abc
+echo ${abc}
+~~~
+
 #文字列の中に値の変数を埋め込む $変数名 ${変数名}
 str2="hello $abc ${str}"
 i=`expr 100 + 200`  #計算結果を代入
@@ -146,12 +166,6 @@ i=`expr $a + $b`
 i=`expr $i + 1`  #インクリメント
 ~~~
 
-###変数の参照  
-`$変数名 or ${変数名}`
-~~~sh
-echo $abc
-echo ${abc}
-~~~
 
 ###特殊な変数
 システムが用意した特殊な変数がある。
@@ -170,10 +184,15 @@ $1～$n | シェルに与えられた引数の値。$1は第１引数、$2は第
 
 #echo printf
 <!-- echo:: printf:: -->
-echoやprintf でコンソール(標準出力)や指定のファイルに文字列を表示できる
+echoやprintf でコンソール(標準出力)や指定のファイルに文字列を表示できる。
 
 echo は **改行あり**  
-printf は **改行なし**  
+printf は **改行なし**
+
+※echoで表示する文字列で改行(\n)したい場合 -e オプションをつけてechoを呼ぶ
+~~~sh
+echo -e "hoge\nhoge"
+~~~  
 
 ~~~sh
 #echo
@@ -201,6 +220,7 @@ printf "hello world \n" >> hello.txt
 
 ~~~sh
 #配列の初期化
+配列の区切り文字は' 'スペース
   array=(1 2 3 4 "5" "6" "7")
 
 #指定要素に代入
