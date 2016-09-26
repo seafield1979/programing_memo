@@ -1,4 +1,4 @@
-###リダイレクト　redirect
+#リダイレクト　redirect
 
 ```php
 header('location: [パス]');

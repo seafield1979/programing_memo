@@ -1,4 +1,4 @@
-###POST GET
+#POST GET
 htmlのフォームから送信されたGET/POSTメッセージを取得する  
 
 **送信側 html**

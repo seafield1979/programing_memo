@@ -5,7 +5,11 @@
 $su -
 
 ##PHPをインストール
+
+```sh
 # yum -y install php php-mbstring php-mysql php-gd
+```
+
 "complete!" と表示されたら成功
 ~~~
 

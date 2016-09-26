@@ -1,4 +1,4 @@
-#PHPのファイル files
+#PHPのファイル file paths
 
 phpファイルの置き場所  
 

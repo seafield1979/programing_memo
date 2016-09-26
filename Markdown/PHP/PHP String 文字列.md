@@ -1,36 +1,45 @@
-
-
 #文字列 string
 
 文字列の連結は`'.'`  
 	`"hoge" . "hoge" . $str1`
 
-```php
-~~~php
-シングルコート文字列 
+###シングルコート文字列 
 
+```php
 //シングルコード文字列はエスケープ(\nや\t)や変数は展開されない
 // '文字列'
 echo 'hello\n'       // hello\n  と表示される
 echo 'hello $hoge'   // hello $hoge と表示される
+```
 
-// ダブルコート文字列
+###ダブルコート文字列
+
+```php
 // ダブルコートで囲んだ文字列内のエスケープや変数は展開される
 // "文字列"
 echo "hello\n";     // hello の後に改行される
 echo "hello$hoge";  // $hogeが展開されて表示される
 echo "hello${hoge}"   // $hogeが展開されて表示される。上と同じ
 
-//文字列の要素にアクセス
+
+```
+
+###文字列の要素にアクセス
 ある文字列を１文字づつ取り出して処理を行う方法
 
+```php
 $hoge = "hoge";
 echo $hoge[0];    // h
 foreach (str_split($hoge) as $value){
   echo $value . "\n";   // h,o,g,e が出力される
 });
 
-//文字列の長さ strlen:
+
+```
+
+###文字列操作メソッド
+
+```php
 strlen(文字列)
 ※文字列以外の値を渡すとエラーになる。is_stringでチェックが必要
 
@@ -72,11 +81,11 @@ $array = explode(",", "aaa,bbb,ccc", )
 設定したい文字列  
 [適当な文字列];  
 
-~~~php
+```php
 例:
 echo <<<hoge
   aaa
   bbb
   ccc
 hoge;
-~~~
+```

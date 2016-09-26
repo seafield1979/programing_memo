@@ -1,4 +1,4 @@
-###日時時刻取得 date
+#日時時刻取得 date
 
 ```php
 date("Y-m-d H:i:s");

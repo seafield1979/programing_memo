@@ -1,4 +1,5 @@
-#loop
+#ループ処理 loop
+
 ###for
 
 ```php

@@ -33,7 +33,7 @@ Javaでファイル入出力するにはRandomAccessFileクラスがあれば他
 
 |戻り値|メソッド|内容|
 |---|---|---|
-|void | write(int b) | このファイルに指定されたバイトを書き込みます。
+|void | write(int b) | このファイルに指定されたバイトを書き込みます。|
 |void | write(byte[]) | 現在のファイルポインタの位置から、引数に指定されたbyte配列分のデータをファイルに書き込みます。
 |void | write(byte[] b, int off, int len) | 指定されたバイト配列のオフセット off から len バイトを、このファイルに書き込みます。
 |void | writeUTF(String) | マシンに依存しないUTF-8エンコーディングを使って、文字列をファイルに書き込みます。

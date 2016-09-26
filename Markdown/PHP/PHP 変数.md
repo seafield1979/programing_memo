@@ -15,13 +15,14 @@ __グローバル変数__:
 関数内でグローバル変数が使えない。
 関数内でグローバル変数を使う場合は global をつける
 
-~~~php
+```sh
 例: プログラムの引数 $argv を使用する
 function hoge{
   global $argv;
   print_r($argv);
 }
-~~~
+```
+
 ##変数の型  
 |型|説明|
 |:--|:--|
@@ -34,7 +35,7 @@ function hoge{
 
 ##型変換・キャスト
 
-~~~php
+```sh
 //文字列 -> 整数値
 $int1 = (int)"123";  // キャスト
 $int2 = intval("123");   // 整数値に変換
@@ -48,7 +49,7 @@ print(gettype($str));   // string
 $int1 = (int)1.2345;
 $int2 = intval(1.2345);
 print(gettype($int1) . " " . gettype($int2));  // integer integer
-~~~
+```
 
 |キャスト|説明|
 |---|---|
@@ -104,9 +105,10 @@ gettypeメソッドは変数の型を返す。
 ## 異なる型の加算
 数値と文字列の加算(+)は、文字列が数値として評価できた場合にのみ数値として加算される。
 
-~~~php
+```sh
 ＄foo = 1 + "10.5";              // $foo は float です (11.5)
 ＄foo = 1 + "-1.3e3";            // $foo は float です (-1299)
 ＄foo = 1 + "bob-1.3e3";         // $foo は integer です (1)  
 ＄foo = 1 + "bob3";              // $foo は integer です (1)  後の文字列は無視される
-~~~
+```
+

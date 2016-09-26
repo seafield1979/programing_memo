@@ -1,8 +1,9 @@
 #配列 array
   PHPの配列はすべて連想配列。2次元配列でも子要素の要素数はバラバラにできる
 
-**初期化**
-~~~php
+###初期化
+
+```php
 // 空の配列
 $配列名 = array();
 
@@ -15,10 +16,11 @@ $配列名 = array(key1=>value1, key2=>value2, ...);
 // キー名を省略
 $配列名 = array(value1, value2, ...);
 例:  $array1 = array("hoge", "hoge2", "hoge3");
-~~~
+```
 
-**参照**
-~~~php
+###参照
+
+```php
 //配列の要素を参照する場合は
 $配列名["キー"]; 
 
@@ -28,11 +30,11 @@ $array = array(1,2,3,4,5);    // [0]=>1, [1]=>2, [2]=>3, [3]=>4, [4]=>5
 $array = array(1,2,3,4,5);
 echo $array[0];   // 1
 echo $array[2];   // 3
-~~~
+```
 
-**配列のあれこれ**
+###配列のあれこれ
 
-~~~php
+```php
 //要素数を取得
 count($配列);
 
@@ -72,4 +74,4 @@ foreach($array as $value) {
 foreach($array as $key=>$value) {
     echo "key=$key value=$value\n";
 }
-~~~
+```

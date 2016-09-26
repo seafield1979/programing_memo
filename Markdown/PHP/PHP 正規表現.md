@@ -1,4 +1,5 @@
-#[preg_match](http://php.net/manual/ja/function.preg-match.php)
+#正規表現 regexp
+[preg_match](http://php.net/manual/ja/function.preg-match.php)
 正規表現を使用したパターンマッチ。マッチした文字列を取得することもできる。
 
 ```php

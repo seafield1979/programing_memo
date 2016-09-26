@@ -1,4 +1,4 @@
-##PHP Query
+#PHP Query
 <!-- phpquery:: -->
 htmlをDOMのようなオブジェクトに変換してから、セレクタや便利メソッドを使ってあれこれできる。jQueryのPHP版。
 

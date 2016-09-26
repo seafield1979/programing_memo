@@ -1,4 +1,4 @@
-##ファイル操作関数
+#ファイル操作関数 file functions
 
 ###カレントディレクトリを変更 chdir
 bool chdir ( string $directory )  

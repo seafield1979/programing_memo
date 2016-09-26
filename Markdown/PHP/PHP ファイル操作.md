@@ -1,8 +1,7 @@
 #ファイル操作 file
 ファイルの内容を読み込んだり、書き込んだりする。
 
-##基本操作
-###サンプル
+###基本操作
 
 // hoge.txt というファイルに "hogehoge" 
 という文字列を書き込む
@@ -14,7 +13,10 @@ fclose($fp);
 ```
 
 ###開くfopen
+
+```php
 handler fopen( string filename , string mode [, int use_include_path ] )
+```
 
 |パラメータ|説明|
 |---|---|
@@ -34,11 +36,12 @@ mode
 
 
 ###閉じる fclose
-~~~php
+
+```php
 bool fclose( resource handle )
 
 fclose($fp)
-~~~
+```
 
 ##ファイルから読み込む
 hoge.txt から全行を読み込む
@@ -79,7 +82,6 @@ while( ! feof( $fp ) ){
 //handle が指すファイルポインタから最高 length バイト読み込む
 //戻り値:
 //ファイルポインタから読み出した文字列／FALSE（ファイルが終端に達したかエラーの場合）
-
 string fread ( resource $handle , int $length )
 ```
 
@@ -96,7 +98,7 @@ write_length]);
 int fwrite ( resource `$handle`, string `$string` [, int $length ] );
 ```
 
-例: ファイルの全行を表示
+###ファイルの全行を表示
 
 ```php
 if (!($fp = fopen("./hoge.txt", "r"))) {

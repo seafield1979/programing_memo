@@ -10,9 +10,7 @@
 
 `var_dump(配列やオブジェクト)`
 
-~~~php
-<?php
-
+```php
 //echo
   $str = "hello world!!";
   echo "hogehoge" . $str1 . "\n";
@@ -52,4 +50,5 @@ ob_end_clean();                     //本来出力されるはずのデータを
 $fp = fopen('test.txt', 'w');
 fwrite($fp, $output);
 fclose($fp);
-~~~
+```
+
