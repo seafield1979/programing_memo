@@ -9,8 +9,6 @@
     __FUNCTION__
     __LINE__
 
-
-
 ```swift
 // 改行しない
 // terminatorで文字列の終端を指定できる(デフォルトは改行'\n')

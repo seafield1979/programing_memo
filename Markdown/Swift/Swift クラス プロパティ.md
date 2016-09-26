@@ -1,4 +1,4 @@
-###プロパティ (Property)
+#プロパティ Property
 <!-- Property:: -->
 クラスのプロパティには保持型プロパティ(Stored Property)と計算型プロパティ(Computed Property)の２種類がある。
 

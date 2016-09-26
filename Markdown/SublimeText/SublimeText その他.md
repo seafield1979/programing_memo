@@ -1,4 +1,8 @@
-#サイドバーのフォントサイズ変更
+#その他 others
+ 便利技やエラー対処法等のトピックス
+ 
+ 
+###サイドバーのフォントサイズ変更
 
 Sublime Text -> Preferences -> Browse Packages
 Open "User"

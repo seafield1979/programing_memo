@@ -1,4 +1,4 @@
-#Swiftコーディング規約 coding
+#コーディング規約 coding rules
 <!-- coding:: -->
 [Swiftコーディング規約@Wantedly](http://qiita.com/susieyy/items/f71435cc962e70d81b37)
 

@@ -1,4 +1,4 @@
-###クラスの継承 inherit
+#クラスの継承 inherit
 swiftにはNSObjectのような基底クラスはないので、なにも継承しないクラスを作れる
 
 ```swift
