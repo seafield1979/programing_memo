@@ -19,6 +19,17 @@ Object
 |setShadowLayer(radius, x, y, color)|テキストの影を設定|
 |setTypeface(Typeface tf, int style)|テキストのタイプ(太文字、斜体等)を設定|
 
+### コードで生成する
+プログラム実行時に作成する方法。
+
+```java
+TextView textView = new TextView(this);
+textView.setText("hoge");
+<親View>.addView(textView);
+```
+
+
+
 ### アイコンを表示する
 ![](http://sunsunsoft.com/image/android/textview_show_icon.png)
 

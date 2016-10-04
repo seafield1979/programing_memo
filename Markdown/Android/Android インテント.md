@@ -10,9 +10,9 @@
 import android.content.Intent;
 
 // Main2Activity アクティビティを呼び出す
-Intent i = new Intent(getApplicationContext(),Main2Activity.class);
+Intent i = new Intent(getApplicationContext(),MainActivity.class);
 もしくは
-Intent i = new Intent(MainActivity.this, Main2Activity.class);
+Intent i = new Intent(MainActivity.this, MainActivity.class);
 
 startActivity(i);
 ```
