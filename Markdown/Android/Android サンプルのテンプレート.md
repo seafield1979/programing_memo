@@ -6,15 +6,14 @@
 
 ![](http://sunsunsoft.com/image/android/template_buttons.png)
 
-```java
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.shutaro.testscroll.MenuActivity">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -100,29 +99,46 @@ public class MenuActivity extends AppCompatActivity implements OnClickListener {
 
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.button: {
-                Log.v("myLog", "button was pushed");
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
-            }
+          case R.id.button:
+                test1();
                 break;
             case R.id.button2:
-                Log.v("myLog", "button2 was pushed");
+                test2();
                 break;
             case R.id.button3:
-                Log.v("myLog", "button3 was pushed");
+                test3();
                 break;
             case R.id.button4:
-                Log.v("myLog", "button4 was pushed");
+                test4();
                 break;
             case R.id.button5:
-                Log.v("myLog", "button5 was pushed");
+                test5();
                 break;
             case R.id.button6:
-                Log.v("myLog", "button6 was pushed");
+                test6();
                 break;
         }
+    }
+    
+    private void test1() {
+      Intent i = new Intent(getApplicationContext(),MainActivity.class);
+      startActivity(i);
+    }
+    private void test2() {
+    }
+    private void test3() {
+    }
+    private void test4() {
+    }
+    private void test5() {
+    }
+    private void test6() {
     }
 }
 
 ```
+
+###大量のViewを追加
+指定のView以下に大量のViewを追加する。
+
+###ログ用のListView

@@ -19,3 +19,11 @@ layout.xml
     android:hint="You name"
     android:id="@+id/editText"/>
 ```
+
+###テキストをセット、ゲットする
+
+```java
+mEditText = (EditText)findViewById(R.id.editText);
+mEditText.setText("hoge");
+String str = mEditText.getText().toString();
+```

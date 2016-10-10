@@ -5,6 +5,41 @@ Androidでは画面に表示されるパーツはxlm形式で記述される。
 わかりやすい。レイアウトのパラメータの説明を網羅している。
 [今さら聞けないRelativeLayoutの話](http://qiita.com/yysk/items/c686153b39d32571d1bd)
 
+##ViewGroup
+
+ActivityにsetContentViewで配置できるViewはひとつだけ。ボタンやテキスト等のWidgetはViewGropuと呼ばれるWidgetを配置する用のViewに配置してから、これをActivityにsetContentViewする。
+
+Activity
+↑  setContentView
+ViewGroup (RelativeLayoutとかLinerLayoutとか)
+↑
+Widgets (ButtonとかTextViewとか)
+
+使用頻度の高いViewGroup
+
+* FrameLayout（Viewを重ねあわせて配置）
+* LinearLayout（Viewを縦もしくは横の一方向に順番に配置）
+* RelativeLayout（View同士の位置関係から相対的に配置）
+* ScrollView (画面に収まりきらない場合にスクロールする、子要素は１つだけ)
+* TableLayout (縦横のテーブル、各列、行のサイズは可変)
+
+
+**LinearLayout**
+要素が順番に並ぶ。weightを指定することで等間隔に配置したり、同じサイズにしたりもできる。
+
+* 要素が順番に並んでいくのでView通しの並びのためのレイアウトを指定する必要がない
+* ScrollViewの子クラスなので、要素が領域よりも大きくなると自動でスクロールできるようになる
+* orientatinで縦横のどちらに要素が並ぶかを指定できる
+
+**RelativeLayout**
+要素を相対位置で配置する。iOSでいうところのAutoLayout。
+
+**TableLayout**
+
+* 行の幅、列の高さはそれぞれ行、列の中の要素(Widget)の最大のサイズが適用される
+* 行をまたぐには android:layout_span="2"
+* 行（横方向）はTableRow
+
 ##基本
 
 ルートのViewには以下の定義をする
@@ -83,6 +118,7 @@ Viewの内側（コンテンツと外枠境界の間）に余白を入れる
 **layout_alignParent~**
 親Viewとの位置調整。
 ![](http://sunsunsoft.com/image/android/layout_alignParent2.png)
+
 |パラメータ(xml)|説明|
 |---|---|
 |layout_alignParentTop|	trueを指定した場合、親のViewに対して上寄せで配置
