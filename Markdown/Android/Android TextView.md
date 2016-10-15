@@ -69,3 +69,23 @@ setGravityで使用できるプロパティ
 |LEFT|	要素を左方向に寄せる|
 |RIGHT|	要素を右方向に寄せる|
 |TOP|	要素を上方向に寄せる|
+
+
+
+###スクロールする
+領域に文字が表示しきれなくなった時に自動でスクロールできるようにする。
+
+```xml
+<ScrollView
+  android:layout_width ="match_parent"
+  android:layout_height="match_parent"
+  >
+  <TextView
+      android:id="@+id/xxx"
+  　　  android:layout_width="match_parent"
+  　　  android:layout_height="match_parent"
+  　　  android:text="yyy"
+   />
+</ScrollView>
+
+```

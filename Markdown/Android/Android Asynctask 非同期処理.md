@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             for (int i = 0; i < 5; i++) {
                 try {
-                    Thread.sleep(1000); //3000ミリ秒Sleepする
+                    Thread.sleep(1000); //1000ミリ秒Sleepする
                 } catch (InterruptedException e) {
                 }
                 sendText("" + (i + 1) + "\n");

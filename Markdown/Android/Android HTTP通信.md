@@ -5,6 +5,8 @@ AndroidでHTTP通信を行うには HttpURLConnection クラスを使用する�
 * HTTP通信を行うには `INTERNET` パーミッションが必要
 * 通信処理はUIスレッドで行うことはできない。AsyncTaskでスレッドを立ち上げて処理を行う。
 
+AndroidManifest.xml に パーミッションを追加する
+
 ```java
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.example.shutaro.testhttp">
@@ -270,3 +272,44 @@ foreach($data as $key => $val) {
 }
 ?>
 ```
+
+###httpで画像を読み込む
+![](http://sunsunsoft.com/image/android/http_download_image.png)
+HttpURLConnection で 画像をダウンロードする方法。
+
+```java
+private Bitmap downloadImage(String imageUrl) {
+    // 受け取ったbuilderでインターネット通信する
+    HttpURLConnection connection = null;
+    InputStream inputStream = null;
+    Bitmap bitmap = null;
+
+    try{
+
+        URL url = new URL(imageUrl);
+        connection = (HttpURLConnection)url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.connect();
+        inputStream = connection.getInputStream();
+
+        bitmap = BitmapFactory.decodeStream(inputStream);
+    }catch (MalformedURLException exception){
+
+    }catch (IOException exception){
+
+    }finally {
+        if (connection != null){
+            connection.disconnect();
+        }
+        try{
+            if (inputStream != null){
+                inputStream.close();
+            }
+        }catch (IOException exception){
+        }
+    }
+
+    return bitmap;
+}
+```
+

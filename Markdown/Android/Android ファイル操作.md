@@ -22,9 +22,9 @@
 |メソッド|場所|例|
 |---|---|---|
 |getExternalStorageDirectory()|外部ストレージ|/storage/emulated/0/|
-|getExternalFilesDir(Environment.DIRECTORY_PICTURES)|Picturesディレクトリ|/storage/emulated/0//Android/data/<パッケージ名>/pictures/|
+|getExternalFilesDir<br>(Environment.DIRECTORY_PICTURES)|Picturesディレクトリ|/storage/emulated/0//Android/data/<パッケージ名>/pictures/|
 |getDownloadCacheDirectory()|ダウンロードディレクトリ|/cache/|
-|getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)|ドキュメントディレクトリ|/storage/emulated/0/Documents/|
+|getExternalStoragePublicDirectory<br>(Environment.DIRECTORY_DOCUMENTS)|ドキュメントディレクトリ|/storage/emulated/0/Documents/|
 |getRootDirectory() ※1|Systemルートディレクトリ|/system/|
 
 ※1  root以下はread only なので書き込みはできない

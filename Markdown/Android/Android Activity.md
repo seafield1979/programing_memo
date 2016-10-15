@@ -64,7 +64,9 @@ AndroidManifest.xml を編集する
 ```
 
 ###起動時に表示されるアクティビティを変更する
-起動時に表示されるアクティビティをデフォルトのもの(MainActivity)から追加したもの(Main2Activity)に変更する
+Manifestファイルを編集して起動時に表示されるアクティビティをデフォルトのもの(MainActivity)から追加したもの(Main2Activity)に変更する
+
+AndroidManifest.xml
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -104,4 +106,11 @@ Intent i = new Intent(getApplicationContext(),Main2Activity.class);
 Intent i = new Intent(MainActivity.this, Main2Activity.class);
 
 startActivity(i);
+```
+
+###バックキーの動作を変更する
+端末のバックキーの動作を変更するにはActivityクラスの`onBackPressed()`メソッドをオーバーライドする。ここで親クラスの処理を呼ばないことでアプリの終了を行わなくすることもできる。
+
+```xml
+
 ```

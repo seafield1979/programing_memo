@@ -35,3 +35,13 @@ finish()
 
 moveTaskToBack(true);
 
+##その他
+###Android(SDK)のバージョンを取得
+Build.VERSION.SDK_INT
+
+```java
+Build.VERSION.SDK_INT
+// バージョンによる分岐
+if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+}
+```

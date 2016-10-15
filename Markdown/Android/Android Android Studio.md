@@ -94,5 +94,6 @@ xmlの表示切り替え (テキスト <-> Layout)
 |コマンド|オススメ度|Mac|Windows|
 |---|---|---|---|
 |エディタ内検索|★★|Cmd + F|
+|Grep|★★★|Cmd + Shift + F|
 |全て検索|★★★|Shift ２回押し|
 |使われている箇所をハイライト<br>解除するにはPreferences の <br>｀Editor - General - Highlight usages of element at caret<br>のチェックをはずす|★|Cmd + F7|

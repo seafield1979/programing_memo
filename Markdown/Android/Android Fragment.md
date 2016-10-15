@@ -16,6 +16,32 @@ Fragmentとは、簡単にいうと、コンテンツとライフサイクルを
 * ロジックを記述できる(配下のWidgetを制御したり)
 
 
+###ライフサイクル
+![](http://sunsunsoft.com/image/android/fragment_lifecycle.png)
+
+
+操作と発生するイベント
+
+|操作|イベント|説明|
+|---|---|
+|アプリ起動|onAttach<br>onCreate<br>onCreateView<br>onActivityCreated<br>onStart<br>onResume|FragmentTransactionにadd,commitしたとき|
+|アプリ終了|onPause<br>onStop<br>onDestroyView<br>onDestroy<br>onDetach|戻るボタンでアプリを終了したとき|
+|ホームボタン|onPause<br>onStop|ホームボタンでホームに戻ったとき|
+|再表示|onStart<br>onResume|タスク一覧から選択して再表示したとき|
+
+Activityのライフサイクルとの対応
+
+|Activityの状態|Fragmentイベント|
+|---|---|
+|Create|onAttach<br>onCreate<br>onCreateView<br>onActivityCreated|
+|Started|onStart|
+|Resumed|onResume|
+|Paused|onPause|
+|Stopped|onStop|
+|Destroyed|onDestroyView<br>onDestroy<br>onDetach|
+
+
+
 ###使い方
 
 フラグメントを作成する (メニューの`File - New - Fragment`) から適当なFragmentを選択
@@ -183,8 +209,17 @@ public class MainFragment extends Fragment {
 
 ###テクニック
 
+フラグメント内のViewを参照する方法
+inflater.inflate が返すViewオブジェクトを使用してfindViewByIdを呼び出す。
+
 ```java
-// フラグメントクラスの中で findViewById を使用する方法
-View view = inflater.inflate(R.layout.main, container, false);
-TextView textView = (TextView)view.findViewById(R.id.textView3);
+@Override
+public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment21, container, false);
+
+    textView = (TextView)view.findViewById(R.id.textView);
+    textView.append("hogehogehoge\n");
+
+    return view;
+}
 ```
