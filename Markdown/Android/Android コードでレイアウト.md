@@ -8,8 +8,8 @@ LinearLayout.LayoutParams(width,height)でサイズの計算方法のパラメ�
 ```java
 Button button = new Button();
 button.setLayoutParams(new LinearLayout.LayoutParams(
-            LinerLayout.LayoutParams.MATCH_PARENT,
-            LinerLayout.LayoutParams.WRAP_CONTENT));
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT));
 ```
 
 LinearLayout.LayoutParams で設定できるパラメータ
@@ -62,7 +62,7 @@ RelativeLayout.LayoutParams.addRuleで使用出来るパラメータ
 |ALIGN_TOP | 別のViewと上端をわせる
 |ALIGN_BOTTOM | 別のViewと下端を合わせる
 |ALIGN_RIGHT<br>ALIGN_END | 別のViewと右端を合わせる
-|ALIGN_LEFT<br>ALIGN_START | 別のViewと
+|ALIGN_LEFT<br>ALIGN_START | 別のViewと左端を合わせる
 |ALIGN_PARENT_TOP | 親Viewと上端を合わせる
 |ALIGN_PARENT_BOTTOM | 親Viewと下端を合わせる
 |ALIGN_PARENT_RIGHT<br>ALIGN_PARENT_END | 親Viewと右端を合わせる
@@ -70,6 +70,16 @@ RelativeLayout.LayoutParams.addRuleで使用出来るパラメータ
 |CENTER_HORIZONTAL | 親の領域の中心(水平)
 |CENTER_IN_PARENT | 親の領域の中心
 |CENTER_VERTICAL | 親の領域の中心(垂直)
+
+### マージン
+マージンを設定する方法。
+
+```java
+ViewGroup.MarginLayoutParams layout = (ViewGroup.MarginLayoutParams)mImageView.getLayoutParams();
+layout.leftMargin = 50;
+layout.topMargin = 50;
+mImageView.setLayoutParams(layout);
+```
 
 ### 文字の位置を設定(Gravity)
 文字をコンテンツ領域のどちらに寄せて表示させるか

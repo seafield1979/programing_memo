@@ -17,8 +17,13 @@ Http通信
 LogViewのAndroid,iOS版
   最終目的としてはWin,Mac,iOS,Androidの４つの環境で動作する新LogViewを開発すること。
 
+クラウドにバックアップする
+  GoogleDrive、iCloud、Dropbox等のファイルアップロードサービスにファイルをアップできる機能
 
 ##todo
+TextToSpeech(音声読み上げ)
+
+OpenCV
 
 連携
   インテントを呼び出す

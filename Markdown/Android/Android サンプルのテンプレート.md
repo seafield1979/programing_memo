@@ -158,7 +158,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity {
 
     @InjectView(R.id.button)
     Button button;
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_menu);
         ButterKnife.inject(this);
     }
 
@@ -206,7 +206,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void test1() {
-        
+      Intent i = new Intent(getApplicationContext(),MainActivity.class);
+      startActivity(i);
     }
     private void test2() {
 
@@ -229,6 +230,23 @@ public class MainActivity extends AppCompatActivity {
 
 ###大量のViewを追加
 指定のView以下に大量のViewを追加する。
+
+```java
+for (int i=0; i<100; i++) {
+    TextView tv = new TextView(this);
+    tv.setText(String.format("hoge %d", i));
+    if (i%2 == 0) {
+        tv.setBackgroundColor(Color.rgb(200,100,0));
+    }
+
+    tv.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.MATCH_PARENT));
+    tv.setGravity(Gravity.CENTER);
+
+    linear1.addView(tv);
+}
+```
 
 ###ログ用のListView
 

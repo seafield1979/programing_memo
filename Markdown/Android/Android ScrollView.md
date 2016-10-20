@@ -1,5 +1,8 @@
 #ScrollView
 
+ScrollViewで囲んだViewが領域に収まりきらなくなるとスクロールできるようになる。
+が、全てのViewがスクロールできるわけではなく、LinearLayout等のViewGroup系のViewしかスクロールできないようだ。
+
 ```xml
 縦方向にスクロールさせる場合
 <ScrollView

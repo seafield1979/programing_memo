@@ -1,6 +1,6 @@
 #ジェスチャー gesture
 
-タッチ、長押し、スワイプ等の操作を補足するにはジェスチャー
+タッチ、長押し、スワイプ等の操作を補足するにはジェスチャークラス(GestureDetector)を使用する
 
 ```java
 public class MainActivity extends AppCompatActivity {
