@@ -1,8 +1,28 @@
 #データベース Database
 SQLiteを使ったデータベース
 
+[TechBooster SQLiteの使い方/Getting Started](http://techbooster.jpn.org/andriod/application/9335/)
+
 テーブルを作成する
 データベースの作成、テーブルの作成はSQLiteOpenHelperクラスを継承した専用のヘルパークラスで行う。
+
+SQLiteOpenHelperクラス
+
+|メソッド名|呼び出されるタイミング|
+|---|---|
+|onCreateメソッド|	DBが作成されていない場合に呼び出される|
+|onUpgradeメソッド|	DBのバージョンが一致しない場合に呼び出される|
+|getReadableDatabaseメソッド|	読み込み権限のみのDBを取得する|
+|getWritableDatabaseメソッド|	読み書き権限のDBを取得する|
+
+SQLiteDatabaseクラス
+
+|メソッド名|用途|
+|---|---|
+|insertメソッド|データを入力する|
+|deleteメソッド|データを削除する|
+|execSQLメソッド|SQL文を実行する|
+|queryメソッド|データを検索する|
 
 ```java
 - ContactDbOpenHelper.java  -
@@ -94,9 +114,6 @@ try {
 Cursor cursor = null;
 try {
     // Commentsテーブルのすべてのデータを取得
-//  Cursor query(String table, String[] columns, String selection,
-//  String[] selectionArgs, String groupBy, String having,
-//  String orderBy) {
     cursor = db.query(Contact.TBNAME,   // テーブル名
             null,                       // カラム指定
             Contact.AGE + " > ?",       // SELECT文
@@ -150,6 +167,16 @@ int n = db.update(Contact.TBNAME,   // テーブル名
       values,                       // 設定値(ContentValuesに設定しておく)
       Contact.NAME + " like ?",     // SELECT文
       new String[]{"%a%"});         // SELECT文パラメータ
+```
+
+###UPDATE文(rawQuery)
+rawQueryでSQL文をそのまま渡す。updateメソッドを使うより簡単に条件指定ができる。
+
+```java
+String query = "UPDATE t_contact SET f_age=101 WHERE f_age in (1,10,100)";
+Cursor cursor = db.rawQuery(query, null);
+cursor.moveToFirst();
+cursor.close();
 ```
 
 ###DELETE文

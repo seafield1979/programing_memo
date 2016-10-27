@@ -1,5 +1,14 @@
 #Time 日時のあれこれ
-DateクラスはAPI22でdeprecatedになってしまったので、DateかCalendarを使う。
+
+##システムの時間(ms)
+System.currentTimeMillis() で1970年1月1日からのミリ秒を取得できる。
+
+```java
+long currentTimeMillis = System.currentTimeMillis();
+```
+
+## Calendar 
+DateクラスはAPI22でdeprecatedになってしまったのでCalendarを使う。
 Dateは1970/1/1/ からの経過時間をmsで保持する。タイムゾーンの概念はない。
 Calendarはタイムゾーンの指定ができる、日時の計算ができる。
 たぶんCalendarがあれば日付や時間の処理は事足りる。

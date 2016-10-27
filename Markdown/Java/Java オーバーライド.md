@@ -1,4 +1,4 @@
-###Java オーバーライド override
+#オーバーライド override
 overrideの元々の意味。
 
 ~~~
@@ -9,13 +9,13 @@ Javaでは親クラスで定義されたメソッドを子クラスでオーバ�
 
 オーバーライドするには子クラスで親クラスと同名のメソッドを定義するだけで良いが、オーバーライドされたメソッドされたということを強調するために `@Override` をつけることもできる。
 
-~~~java
+```swift
 @Override public void hoge();
-~~~
+```
 
 サンプル
 
-~~~java
+```swift
 class Hoge {
   public void hoge() {
     System.out.println("hoge");
@@ -31,5 +31,5 @@ class HogeSub extends Hoge {
 
 HogeSub sub1 = HogeSub();
 sub1.hoge();    // hoge hoge
+```
 
-~~~

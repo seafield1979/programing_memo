@@ -10,6 +10,9 @@ Button button = new Button();
 button.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT));
+            
+// 直接サイズを指定する
+ button.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
 ```
 
 LinearLayout.LayoutParams で設定できるパラメータ
@@ -19,7 +22,7 @@ LinearLayout.LayoutParams で設定できるパラメータ
 |LinerLayout.LayoutParams.MATCH_PARENT| 親のサイズと同じ(width/height)|
 |LinerLayout.LayoutParams.WRAP_CONTENT| コンテンツのサイズ(width/height)|
 
-ピクセルで設定する場合は以下のメソッドを使用する。
+ピクセルで設定する場合は以下のメソッドを使用する。（※コンテンツのサイズを持っているView限定。例えばTextView等)
 
 |メソッド|説明|
 |---|---|

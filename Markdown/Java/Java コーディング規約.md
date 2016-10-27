@@ -1,4 +1,4 @@
-#Java コーディング規約 coding rule
+#コーディング規約 coding rule
 
 [Java コーディング標準 - オブジェクト倶楽部](http://objectclub.jp/community/codingstandard/CodingStd.pdf)
 を参考にした(ほとんどコピペ)

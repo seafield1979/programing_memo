@@ -1,7 +1,7 @@
-###while文
+#while文
 C言語とほぼ同じ。
 
-~~~java
+```sh
 int i=0;
 while(i<10) {
     System.out.println("count:" + String.valuceeOf(i));
@@ -16,4 +16,4 @@ while (true) {
     }
     i++;
 }
-~~~
+```

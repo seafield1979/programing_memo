@@ -1,4 +1,4 @@
-##Java 配列
+#配列 array
 Javaの配列の特徴
 
 * new で配列の実体を確保
@@ -6,7 +6,8 @@ Javaの配列の特徴
 * 配列の要素数を変更するメソッドや仕組みはない。要素数を変更したい場合は新しい要素数の配列を用意して、そちらに古い配列の値をコピーする。
 
 ###配列の宣言＆初期化
-~~~java
+
+```swift
 //配列の宣言方法
 //型 変数名[] = new 型[要素数];
 //型[] 変数名 = new 型[要素数];
@@ -22,6 +23,16 @@ int array[] = {1,2,3,4,5};
 int array[] = new int[5];
 System.out.println(array.length);
 
+// 配列の要素にアクセス1
+for (int i=0; i<array.length; i++) {
+  System.out.println(array[i]);
+}
+
+// 配列の要素にアクセス2
+for (int value : array) {
+  System.out.println(String.valueOf(value));
+}
+
 // 配列の要素をコピー
 // cloneを使う
 int[] cloneSrc = {1,2,3,4,5};
@@ -36,6 +47,13 @@ int[] arrayCopyDst = new int[5];
 System.arraycopy(arrayCopySrc, 3, arrayCopyDst, 0, 5);
 dispIntArray("arrayCopyDst", arrayCopyDst);
 
+```
+
+```swift
+###多次元配列
+```
+
+```swift
 // 多次元配列
 // 要素の数は揃っていなくてもOK
 // 型名 配列変数名[][];
@@ -50,4 +68,30 @@ seiseki[1] = array2;
 // 多次元配列の初期値あり初期化
 int num[][] = {{10, 8, 5}, {9, 16, 4, 11}, {3, 7, 5}};
 
-~~~
+
+// 多次元配列の初期値あり初期化
+int num[][] = new int[][]{{10, 8, 5}, {9, 16, 4, 11}, {3, 7, 5}};
+int count = 0;
+for (int[] nameArray : num) {
+    count++;
+    this.dispIntArray("num" + String.valueOf(count), nameArray);
+}
+
+// 多次元配列の初期化2
+String strs[][] = new String[][]{{"hoge1","hoge2"},{"hoge3","hoge4"}};
+for (String[] array1 : strs) {
+    for (String str : array1) {
+        System.out.println(str);
+    }
+}
+
+// int配列を表示する
+public static void dispIntArray(String name, int[] array) {
+    System.out.println(name);
+    for (int val : array) {
+        System.out.print(String.valueOf(val) + " ");
+    }
+    System.out.println("");
+}
+
+```

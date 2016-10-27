@@ -10,8 +10,7 @@
 |---|wait()|スレッド2が待ち状態になる|
 |nitifyAll()|---|スレッド2の待ち状態が解除される
 
-
-~~~java
+```java
 class WaitClass {
     // 動作モード 0: block1も2も実行中でない
     //          1: block1が実行中
@@ -81,4 +80,5 @@ class WaitThread1 extends Thread {
         }
     }
 }
-~~~
+```
+

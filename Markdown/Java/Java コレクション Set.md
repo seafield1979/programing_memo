@@ -1,4 +1,4 @@
-#Java Collection Set
+#コレクション Set
 
 [Java道 Set](http://www.javaroad.jp/java_collection3.htm)
 
@@ -23,7 +23,7 @@ Setインタフェースを実装した基本となるクラスです。保持�
 |boolean | contains (Object) | 引数で指定された要素が、セットに存在する場合trueを返します。
 |boolean | remove  (Object) | 引数で指定された要素が、セットに存在する場合その要素を削除します。
 
-~~~java
+```java
 // HashSet をテスト
 // Integer型の値を保持するSetを作成
 public void testHashSet1() {
@@ -51,4 +51,5 @@ public void testHashSet1() {
         
     }
 }
-~~~
+```
+

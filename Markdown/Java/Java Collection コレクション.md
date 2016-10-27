@@ -1,4 +1,4 @@
-#Java Collection コレクション
+#Collection コレクション
 
 ![](http://www.javaroad.jp/images/collection1.gif)
 

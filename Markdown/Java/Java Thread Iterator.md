@@ -20,9 +20,7 @@ List,Set,Mapの各コレクションはイテレータが使用出来る。要�
 |Object	next()|繰り返し処理において、次の要素を返します。
 |void remove()|繰り返し処理において呼び出された、最後の要素を削除します。
 
-
-~~~java
-
+```java
 public void testIterator() {
     Set<Integer> hs1 = new HashSet<Integer>();
 
@@ -38,4 +36,5 @@ public void testIterator() {
     }
     System.out.println("削除後" + hs1);
 }
-~~~
+```
+

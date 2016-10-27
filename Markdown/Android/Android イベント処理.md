@@ -2,6 +2,11 @@
 
 タッチやスワイプ等のイベントを補足して自前の処理を行う方法。
 
+[Android のタッチイベントを理解する(その1)](http://blog.lciel.jp/blog/2013/12/03/android-touch-event/)
+
+イベントはや親Viewから子Viewに伝達していく。
+子への伝達を行いたくない場合は親ViewのonInterceptTouchEvent()でtrueを返す
+
 ##イベントの種類
 
 |イベント|リスナー|設定メソッド|イベントメソッド|
@@ -136,9 +141,11 @@ public class Test1Activity extends AppCompatActivity implements OnTouchListener{
   public boolean onTouch(View v, MotionEvent e){
     String action = "";
 
+    boolean ret = false;
     switch(e.getAction()) {
       case MotionEvent.ACTION_DOWN:
           action = "ACTION_DOWN";
+          ret = true;   // MOVEイベントを発生させる場合はtrueを返す
           break;
       case MotionEvent.ACTION_UP:
           action = "ACTION_UP";
@@ -155,7 +162,7 @@ public class Test1Activity extends AppCompatActivity implements OnTouchListener{
 
     String id = getApplicationContext().getResources().getResourceEntryName(v.getId());
     Log.v(TAG, "action:" + action + " id:" + id + " x:" + e.getX() + " y:" + e.getY());
-    return true;
+    return ret;
   }
 }
 ```

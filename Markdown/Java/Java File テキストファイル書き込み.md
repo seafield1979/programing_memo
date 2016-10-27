@@ -1,4 +1,5 @@
-#Java FileIO テキスト書き込み
+#FileIO Write Text
+テキスト書き込み
 
 ###文字列をファイルに書き込む
 文字列をファイルに書き込む場合は
@@ -7,7 +8,7 @@
 2. FileWriterオブジェクトの write()メソッドで文字列を書き込む
 3. FileWriterオブジェクトをクローズ
 
-~~~java
+```sh
 // テキストをファイルに書き込む
 // FileWriter write()
 public void writeText(String filePath) {
@@ -25,4 +26,4 @@ public void writeText(String filePath) {
         System.out.println(e);
     }
 }
-~~~
+```

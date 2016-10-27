@@ -1,4 +1,6 @@
-#Java FileIO テキストファイル読み込み
+#FileIO Read Text
+
+テキストファイル読み込み
 
 ###テキストファイル読み込み(１文字づつ)
 1文字づつ文字を取得したい場合は
@@ -6,7 +8,7 @@
 1. FileReaderでファイルを開き
 2. FileReaderオブジェクトのread()で１文字取得する
 
-~~~java
+```sh
 // テキストファイルを１文字づつ出力
 public void readChar(String filePath) {
     try {
@@ -23,7 +25,7 @@ public void readChar(String filePath) {
       System.out.println(e);
     }
 }
-~~~
+```
 
 ###テキストファイル読み込み(１行づつ)
 1行づつテキストを読み込みたい場合は
@@ -31,7 +33,7 @@ public void readChar(String filePath) {
 1. FileReaderでファイルをオープン
 2. BufferReaderで1行づつ文字列を読み込む
 
-~~~java
+```sh
 public void readText(String filePath) {
     try {
         FileReader fr = new FileReader(filePath);
@@ -49,4 +51,5 @@ public void readText(String filePath) {
         System.out.println(e);
     }
 }
-~~~
+```
+

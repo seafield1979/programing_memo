@@ -15,11 +15,17 @@ Androidアプリで一定時間ごとに処理を行いたい場合の手段
 ```java
 public class Test1Activity extends AppCompatActivity 
 {
-  Timer timer = new Timer();
+  Timer timer;
+  final int FIRST_PERIOD = 1000; 
   final int INTERVAL_PERIOD = 2000;
   
   private void test1() {
+    if (timer != null) {
+      timer.cancel();
+      timer = null;
+    }
     // TimerオブジェクトのscheduleAtFixedRateにTimerTaskオブジェクトを渡す
+    timer = new Timer();
     timer.scheduleAtFixedRate(new TimerTask(){
         @Override
         public void run() {
@@ -30,7 +36,7 @@ public class Test1Activity extends AppCompatActivity
                 }
             });
         }
-    }, 0, INTERVAL_PERIOD);
+    }, FIRST_PERIOD, INTERVAL_PERIOD);
   }
 }
 ```

@@ -1,17 +1,28 @@
-#Java Thread の実行
-
-Threadを使って同時に２つの処理を実行する。
+#Thread の実行
+Threadを使ってバックグラウンドで処理を実行する。
 
 2つのThreadを同時に実行する
 
+Threadクラスのメソッド
+
+|メソッド|説明|
+|---|---|
+
+
+Threadで処理を行いたい場合は以下の方法がある
+
+1.Threadクラスのサブクラスを作る
+2.Runnableインターフェイスを持つクラスを元にThreadオブジェクトを作成
+
 スレッドを動かすのに必要な処理は以下
 
+###Threadのサブクラス
 1.  Thread クラスを継承したクラス
 2. 1のクラスでrunメソッドを実装
 3. 1のクラスのオブジェクトを生成
 4. 3のオブジェクトからstartメソッドを実行
 
-```java:ThreadTest1.java
+```java
 /**
 * Threadのテスト
 * 2つのThreadを同時に実行する
@@ -56,3 +67,48 @@ class TestThread {
     }
 }
 ```
+
+###Runnableインターフェース
+Runnableインターフェースを持つクラスを元にThreadを立ち上げる
+
+1. Runnableクラスを継承したクラスを作成
+2. 1のクラスでrun()メソッドを実装
+3. メインスレッドでMyRunnableオブジェクトを作成、これを元にThreadオブジェクトを作成
+4. Threadオブジェクト のstart()でスレッド開始
+
+```java
+class MyRunnable implements Runnable {
+    final int INTERVAL_PERIOD = 1000;
+    private int mCount = 0;
+    private boolean running = true;
+
+    // Threadの処理
+    public void run() {
+        System.out.println("thread1 start");
+        while(running) {
+            System.out.println("count " + mCount);
+            mCount++;
+            try {
+                Thread.sleep(INTERVAL_PERIOD);
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
+    // 停止要求
+    public void stopRequest() {
+        running = false;
+    }
+}
+
+public class TestThread {
+  public static void main() {
+    MyRunnable runnable = new MyRunnable();
+    Thread thread1 = new Thread(runnable);
+    Thread thread2 = new Thread(runnable);
+    thread1.start();
+    thread2.start();
+  }
+}
+```
+

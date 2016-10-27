@@ -97,3 +97,13 @@ xmlの表示切り替え (テキスト <-> Layout)
 |Grep|★★★|Cmd + Shift + F|
 |全て検索|★★★|Shift ２回押し|
 |使われている箇所をハイライト<br>解除するにはPreferences の <br>｀Editor - General - Highlight usages of element at caret<br>のチェックをはずす|★|Cmd + F7|
+
+##その他
+
+###コードエディタ中の自動整形をON/OFF
+
+```java
+// @formatter:off
+自動整形しないコード
+// @formatter:on
+```

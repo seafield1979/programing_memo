@@ -1,8 +1,8 @@
-#Java Loop for
+#Loop for
 
 C言語のfor分と同じ。配列の要素数分のループを回すのに for(変数 : 配列) の構文が使える
 
-~~~java
+```swift
   // 配列の要素数でループを回す
   for (int i=0; i<10; i++) {
       System.out.println("count: " + String.valueOf(i));
@@ -30,4 +30,5 @@ C言語のfor分と同じ。配列の要素数分のループを回すのに for
   for (String s : args) {
       System.out.println(s);
   }
-~~~
+```
+

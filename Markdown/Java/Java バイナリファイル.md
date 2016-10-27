@@ -1,14 +1,16 @@
-###バイナリファイル読み込み(RandomAccessFile)
+#RandomAccessFile
+
+###バイナリファイル読み込み
 バイナリファイルを読み込みたい場合はいくつか方法があるが、RandomAccessFileクラスを使うのが一番簡単。
 
 1. RandomAccessFileの読み込みモード("r")でファイルを開く
 2. 読み込み用のメソッドでデータを読み込む(read~系のメソッド)
 3. 読み込み位置を指定したい場合は seek() を使用してファイルポインタを移動する
 
-~~~java 
+```sh
 // バイナリファイルを読み込み
 // RandomAccessFile
-public void readBinary(String filePath) {
+public byte[] readBinary(String filePath) {
     try {
         // 入力ストリームの生成
         RandomAccessFile raf = new RandomAccessFile(filePath, "r");
@@ -18,19 +20,23 @@ public void readBinary(String filePath) {
         
         // データを読み込む
         // (読み込んだサイズ分読み込み位置がすすむ)
-        int val = raf.readInt();
+        byte[] readData = new byte[(int)raf.length()];
+        int len = raf.read(readData);
         
         // 後始末
         raf.close();
+        
+        return readData;
     } catch(FileNotFoundException e) { 
         System.out.println(e);
     } catch(IOException e) {
         System.out.println(e);
     }
+    return null;
 }
-~~~
+```
 
-###バイナリファイル書き込み(RandomAccessFile)
+###バイナリファイル書き込み
 ファイルにバイナリデータを書き込むのはいくつか方法があるが、RandomAccessFileクラスを使うのが簡単。
 
 1. RandomAccessFileの読み書き込みモード("rw")でファイルを開く
@@ -38,7 +44,7 @@ public void readBinary(String filePath) {
 3. 書き込み位置を指定したい場合は seek() を使用してファイルポインタを移動する
 4. close()メソッドでファイルをクローズする
 
-~~~java
+```sh
 // ファイルにバイナリを書き込む
 // RandomAccessFile
 public void writeBinary(String fileName) {
@@ -58,4 +64,5 @@ public void writeBinary(String fileName) {
       System.out.println(e);
     }
 }
-~~~
+```
+

@@ -1,4 +1,4 @@
-#Java ThreadをRunnableインターフェイスで実現
+#Thread Runnableインターフェイス
 
 Threadの処理をRunnableインターフェイスを実装して実現
 
@@ -10,7 +10,7 @@ Threadの処理をRunnableインターフェイスを実装して実現
 4. Threadオブジェクトのコンストラクタに3のオブジェクトを渡して生成
 5. 4のThreadオブジェクトの startメソッドを呼び出す
 
-~~~java
+```java
 /**
  * Runnableインターフェースをimplementsしたクラスでrunメソッドに処理を記述する
  */
@@ -40,14 +40,14 @@ class TestThread {
         thread2.start();
     }
 }
-~~~
+```
 
 出力
 
-~~~shell
+```sh
 Runnable run 1
 Runnable run 2
 Runnable run 3
 ...
 Runnable run 99
-~~~
+```

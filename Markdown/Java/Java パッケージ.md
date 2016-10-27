@@ -1,4 +1,4 @@
-#Java パッケージ package
+#パッケージ package
 
 パッケージはファイルをフォルダ階層に配置してまとめる仕組み。パッケージを使用するとクラス名やファイル名の衝突が回避される。ただし、異なるパッケージに含まれる同じクラス名がかぶっている場合、それらのパッケージを同時にimportするとクラス名がかぶるのでNG。
 
@@ -13,10 +13,11 @@
 MyPacakge1/Hoge というパッケージと  
 MyPackage2/Hoge というパッケージがあって、これらを 
 
-~~~
+```swift
 import MyPackage1/Hoge;
 import MyPackage2/Hoge;
-~~~
+```
+
 のようにインポートした場合、MyPackage1/Hogeクラスは MyPackage2/Hoge に上書きされimport先のクラスでHogeクラスを使用した場合、MyPackage2のHogeが呼び出される。
 
 
@@ -25,10 +26,11 @@ import MyPackage2/Hoge;
 
 jarコマンドで
 
-~~~sh
+```sh
 # jar cf <jarファイル名> <パッケージのトップフォルダ>
 $ jar cf MyPackage.jar MyPackage
-~~~
+```
+
 のようにフォルダjarファイルに圧縮すると、このjarに含まれるパッケージやクラスを外部から使用出来るようになる。
 
 
@@ -37,7 +39,6 @@ $ jar cf MyPackage.jar MyPackage
 試しにパッケージを作ってみる。どこでもいいので以下のようなフォルダ構成でファイルを配置する。
 
 ~~~
-
 - TestPackage.java   パッケージをテストするクラス
 + MyPackage  パッケージのトップフォルダ
   - Hoge1.java      Hoge1クラス
@@ -49,7 +50,7 @@ $ jar cf MyPackage.jar MyPackage
 
 各javaファイルの中身
 
-~~~java:Hoge1.java
+```java
 // パッケージ名を指定する。パッケージのトップからのパス
 // /MyPackage 以下なので　MyPackage
 package MyPackage;
@@ -59,9 +60,11 @@ public class Hoge1 {
     System.out.println("Hoge1 test1()");
   }
 }
+```
 
-~~~
 
+
+```java
 ~~~java:Hoge2.java
 // パッケージ名を指定する。パッケージのトップからのパス
 // /MyPackage/AAA 以下なので　MyPackage.BBB
@@ -103,11 +106,11 @@ class TestPackage {
     hoge3.test1();
   }
 }
-~~~
+```
 
 ファイルを作成したら、コンパイル後、TestPackageクラスを実行する
 
-~~~sh
+```sh
 cd <MyPackageフォルダがある階層>
 $ javac TestPackage.java
 $ javac MyPackage/Hoge1.java
@@ -118,7 +121,7 @@ $ java TestPackage
   Hoge1 test1()
   Hoge2 test2()
   Hoge3 test3()
-~~~
+```
 
 ###パッケージをjarファイルにパックする
 パッケージを使うためにパッケージのフォルダごとコピーするのは面倒臭いので、jarファイルにパッケージをパックして１ファイルで扱えるようにする。このjarファイルをクラス検索パス(Macの場合は ~/Library/Java/Extension/以下)に配置すると、java実行時にimportのパッケージを検索してくれる。
@@ -132,9 +135,10 @@ $ java TestPackage
 **1.jarに圧縮する**  
 jarコマンドを使用する
 
-~~~sh
+```sh
 $ jar cf MyPackage.jar MyPackage
-~~~
+```
+
 これで `MyPackage.jar`が作成される
 
 **2.検索パスに配置する**  
@@ -144,7 +148,7 @@ Macの場合
 
 **3.javaでjarに含まれるクラス(パッケージ)をimportする**  
 
-~~~java
+```java
 // ここでjarに含まれるパッケージのクラスをimport 
 import MyPackage.Hoge1;
 
@@ -155,12 +159,12 @@ class TestPackage {
     hoge1.test1();
   }
 }
-~~~
+```
 
-~~~sh
+```sh
 # MyPackage以下のファイルを圧縮して MyPackage.jar を出力する
 $ jar cf MyPackage.jar MyPackage 
-~~~
+```
 
 ###実行可能なjarファイルを作成する
 Javaから実行可能なjarを作成する方法。実行可能なjarを作成するにはjarの中にpublicなmainメソッドを持ったクラスをパックして、そのクラス名をマニフェストファイルに記述する。
@@ -173,7 +177,8 @@ MANIFEST.MF   マニフェストファイル。jar実行時に呼ばれるクラ
 MyPackage/Hoge.java   パッケージファイル
 ~~~
 
-~~~java:Test1.java
+```java
+// java:Test1.java
 import MyPackage.Hoge;
 
 public class Test1 {
@@ -184,11 +189,8 @@ public class Test1 {
         hoge1.test1();
     }
 }
-~~~
 
-
-~~~java:Hoge.java
-
+// java:Hoge.java
 // Test1で使用されるパッケージクラス
 package MyPackage;
 
@@ -197,9 +199,9 @@ public class Hoge{
         System.out.println("MyPackage.Hoge1.test1()");
     }
 }
-~~~
+```
 
-~~~MANIFEST.MF
+~~~
 # マニフェストファイル
 # Main-Class に実行されるクラス名(Test1)を指定する
 Manifest-Version: 1.0
@@ -209,7 +211,7 @@ Main-Class: Test1
 
 コンパイル＆jar圧縮
 
-~~~sh
+```sh
 #!/bin/bash
 # コンパイル
 $ javac Test1.java
@@ -219,14 +221,15 @@ $ javac MyPackage/Hoge.java
 # f オプションで出力するjarファイルを指定
 # m オプションでマニフェストファイル(MANIFEST.MF)を指定
 $ jar cvfm Runable.jar MANIFEST.MF Test1.class MyPackage
-~~~
+```
 
 これで Runable.jar が生成されるので  
 jar ファイルを実行する
 
-~~~sh
+```sh
 # java コマンドを -jar オプションで実行
 $ java -jar Runable.jar
   Hello Runable Package!!
   MyPackage.Hoge1.test1()
-~~~
+```
+

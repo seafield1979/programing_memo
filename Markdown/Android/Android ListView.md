@@ -3,6 +3,16 @@
 テキストの項目を縦に表示するListViewを作成してみる。
 ![](http://sunsunsoft.com/image/android/listview_sample.png)
 
+
+イベント
+
+|イベント|発生条件|
+|---|---|
+|onItemClickメソッド|	リスト項目クリック時
+|onItemSelectedメソッド|	リスト項目が選択された時<br>(端末の十字キー等でリストの項目がフォーカスされた時)
+|onNothingSelectedメソッド|	リスト項目が何も選択されない時<br>（選択がなくなった時に呼ばれ、初期状態では、呼び出されません。）
+|onItemLongClickメソッド|	リストの項目が長押しされた時
+
 ```xml
 main_layout.xml
 
@@ -51,6 +61,48 @@ public class MainActivity extends Activity  implements OnItemClickListener{
     // リストに表示する文字列
     private static final String[] DAYS = new String[]{"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
+}
+```
+
+###チェック可能なListView
+各項目の右側にチェックボックス流がついて、項目をクリックするとチェック状態を変更できる。チェックした項目は ListView.getCheckedItemPositions() で取得できる
+![](http://sunsunsoft.com/image/android/listview_check.png)
+
+```xml
+- layout.xml -
+<!-- choiceMode の業を追加-->
+<ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:choiceMode="multipleChoice"
+        />
+```
+
+```java
+- Activity.java -
+
+protected void onCreate(Bundle savedInstanceState) {
+    listView = (ListView)findViewById(R.id.listView);
+    listView.setOnItemClickListener(this);
+    
+    // Adapterの作成
+    ListAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, DAYS);
+    
+    // Adapterの設定
+    listView.setAdapter(adapter);
+}
+
+// 選択された項目のログを出力する
+public void test1() {
+    SparseBooleanArray checked = listView.getCheckedItemPositions();
+    for (int i = 0; i < checked.size(); i++) {
+        int at = checked.keyAt(i);
+        if (checked.get(at)) {
+            Log.d("example", "選択されている項目:" + listView.getItemAtPosition(at).toString());
+            Log.d("example", "そのキー" + at);
+        }
+    }
 }
 ```
 

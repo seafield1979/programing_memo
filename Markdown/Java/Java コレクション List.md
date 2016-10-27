@@ -1,4 +1,4 @@
-#Listの概要
+#コレクション List
 
 Listインタフェースは重複要素を許可し、要素において順番を持ちます。インデックス番号により要素にアクセスするメソッドや、要素のインデックス番号を調べるメソッドが用意されています。Listインタフェースを実装するクラスとして、ArrayList、LinkedListが定義されています。
 
@@ -43,12 +43,22 @@ ArrayListクラスはVectorクラスの後継として定義されたもので�
 |Object	|remove(int)|リスト内のインデックス番号で指定された位置にある要素を削除します。返り値として、削除された要素を返します。
 |Object|set(int, Object)|	リスト内のインデックス番号で指定された位置にある要素を引数Objectで指定された要素に置き換えます。返り値として、置き換えられた古い要素を返します。
 |int|size()|リスト内にある要素の数を返します。
+|Array<T>
 
+
+コレクションを逆順で参照したい場合は Collections.reverse(リスト)を使用する。
+
+```java
+// lists を逆運で参照する
+Collections.reverse(lists);
+for (MyData data : lists) {
+}
+```
 
 ###サンプル
 ####ArrayList
 
-~~~java
+```java
 // ArrayListのテスト
 // リストに要素を追加、要素の読み出し
 public void testArray2() {
@@ -87,47 +97,51 @@ public void testArray2() {
         System.out.println(e);
     }       
 }
-
-~~~
-
+```
 
 ####LinkedList
 LinkedListでスタックを実現するサンプル。
 pushでスタックの一番上に要素を追加、popで一番上から要素を取り出す
 
+|戻り型|	メソッド|	説明|
+|---|---|---|
+|void|add(`<T>`)|リストの末尾に要素を追加する
+|void|push(`<T>`)|リストの先頭に要素を追加する<br>0番目に挿入する|
+|`<T>`|pop()/poll()|先頭要素を取り出す。取り出した要素はリストから削除<br>要素がない場合はnullを返す|
+|void|removeFirst()|リストの先頭要素を削除する|
+|void|removeLast()|リストの末尾要素を削除する|
+
+push/pop は先入、先出し（スタック）を実現する
 ~~~
-pushはリストの一番上（末尾）に要素を追加する
+pushはリストの先頭に要素を追加する
 push 1
  ↓
 [1]
 
 push 2
-    ↓
-[1][2]
+ ↓
+[2][1]
 
 push 3
-       ↓
-[1][2][3]
+ ↓
+[3][2][1]
 
 
-popはリストの一番上を取り出す。取り出した要素はリストから削除
+pop/pollはリストの先頭を取り出す。取り出した要素はリストから削除
+pop/pol
+[3]
+ ↑[2][1] 
+ 
+pop/poll
+[2]
+ ↑ [1]
+
 pop
-      [3]
-[1][2] ↑
-
-pop
-   [2]
-[1] ↑
-
-pop
-[1]
+[3]
  ↑
-
 ~~~
 
-
-~~~java
-
+```java
 // LinkedListのテスト
 // popやpush等のキュー用のメソッドが用意されているので待ち行列として使える
 // スタックとして使用する (先入先出し)
@@ -136,7 +150,7 @@ public void testLinkedList1() {
         // private ArrayList<Rule> list = new ArrayList<Rule>();
         LinkedList<String> list1 = new LinkedList<String>();
 
-        // 要素の最後に要素追加
+        // 要素の先頭に要素追加
         for (int i=0; i<10; i++) {
             list1.push("hoge" + String.valueOf(i));
         }
@@ -159,5 +173,5 @@ public void testLinkedList1() {
         System.out.println(e);
     }       
 }
+```
 
-~~~

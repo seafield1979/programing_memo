@@ -32,6 +32,9 @@ public class SampleView extends View{
 
     @Override
     public void onDraw(Canvas canvas) {
+        // 背景塗りつぶし
+        canvas.drawColor(Color.WHITE);
+        
         paint.setTextSize(80);
 
         // 色を設定
@@ -212,11 +215,14 @@ Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.imoni_s);
 
 canvas.drawBitmap(bmp, 0, 0, paint);
 
+// スケール（伸縮）
 canvas.scale(0.5f, 0.5f);
 canvas.drawBitmap(bmp, 0, 0, paint);
 
-canvas.scale(0.5f, 0.5f);
-canvas.drawBitmap(bmp, 0, 0, paint);
+// 指定のサイズで描画
+Rect src = new Rect(0,0,width, height);
+Rect dst = new Rect(x,y,x+width,y+height);
+canvas.drawBitmap(bmp, src, dst, paint);
 ```
 
 ###レイアウトにCanvasを配置

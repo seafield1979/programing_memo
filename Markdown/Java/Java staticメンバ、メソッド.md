@@ -1,4 +1,4 @@
-#Java staticメンバ、メソッド
+#staticメンバ、メソッド
 クラスのプロパティやメソッドの先頭にstaticをつけると、オブジェクトの生成なしで使用出来るクラスプロパティ、クラスメソッドになる。
 
 
@@ -8,7 +8,7 @@
 * クラスメソッドの中で通常のプロパティやメソッドを使用することはできない。逆は可能で、インスタンスメソッドからstaticのプロパティやメソッドを呼び出すことは可能
 * オブジェクトメソッドからクラスプロパティやメソドを参照する場合は先頭に this. をつける
 
-~~~java
+```swift
 // staticテスト
 class TestStatic {
     int age;
@@ -41,5 +41,5 @@ TestStatic.test1();
 
 TestStatic static1 = new TestStatic(36);
 static1.disp();
+```
 
-~~~

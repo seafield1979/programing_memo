@@ -1,15 +1,14 @@
-#同期(synchronized)
+#Synchronized Object によるブロック
 
 オブジェクト(Stringとか)でブロックする方法。処理の中の一部分をブロックできる。
 
-~~~
+```java
 synchronized (ブロックオブジェクト) {
   クリティカルセクションコード 
 }；
-~~~
+```
 
-~~~java
-
+```java
 // 複数のスレッドから利用されるクラス
 // 特定の処理を行っている間は他のスレッドから呼び出して欲しくないメソッドには synchronized をつけて、同時アクセスされないようにする
 class SynchronizedClass {
@@ -58,14 +57,14 @@ class TestThread {
         thread2.start();
     }
 }
-~~~
+```
 
 出力結果。最後まで start! end! が順に表示される。
 
-~~~shell
+```sh
 start2! end2!
 start2! end2!
 start2! end2!
 ...
 start2! end2!
-~~~
+```

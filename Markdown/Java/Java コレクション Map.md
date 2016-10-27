@@ -1,39 +1,41 @@
-Java Collection Map
+#コレクション Map
 
-Mapの概要
+##Mapの概要
 
 Mapインタフェースはキーと値が対になった要素を持ちます。キーの重複は許可されず各キーは1つの値のみに対応付けられます。キーから値を参照するデータ構造を持ったデータの利用に適しています。Mapインタフェースを実装するクラスとして、HashMap、TreeMap、LinkedHashMapが定義されています。
 
-HashMapクラス
+###HashMapクラス
 
 Mapインタフェースを実装した基本となるクラスです。キーの並び順を保持しないという特性をもっています。Mapインタフェースを実装したクラス内では最も高速に動作します。
 
 HashMapクラスはHashTableクラスの後継として定義されたものです。違いは要素の操作を行う際、HashTableクラスが同期化されているのに対して、HashMapクラスが同期化されていない点です。HashMapクラスは同期化されていない分、高速に動作します。同期化された処理をHashMapクラスで行う場合は、HashMapクラスに同期処理を実装します。
 
-TreeMapクラス
+###TreeMapクラス
 
 キーが自然順序、もしくはコンストラクタに指定されたComparatorに従って昇順にソートされた要素を持ちます。
 
-LinkedHashMapクラス
+###LinkedHashMapクラス
 
 キーが挿入される挿入順を保持します。コンストラクタの引数の指定により、挿入順ではなくアクセス順を保持することもできます。デフォルトの状態では挿入順です。
 
-Mapのメソッド
+###Mapのメソッド
 
-戻り値	メソッド	説明
-void	clear()	Mapからすべての要素を削除します。
-boolean	containsKey(Object)	引数で指定されたキーが、Mapに存在する場合trueを返します。
-boolean	containsValue(Object)	引数で指定された値が、Mapに存在する場合trueを返します。
-Object	get(Object)	引数に指定されたキーに紐付けられた値を返します。
-Object	put(Object, Object)	指定された引数(キー, 値)を、Mapに挿入します。
-void	putAll(Map)	引数に指定されたMapの要素すべてを、Mapに挿入します。
-Object	remove (Object)	引数に指定されたキーがMapに存在する場合、そのキーと紐付けられた値を削除します。
-Set	keySet()	Mapに格納されているキーを持つ、セットビューを返します。
-Collection	values()	Mapに格納されている値を持つ、コレクションビューを返します。
-HashMapのサンプル
+|戻り値|	メソッド|	説明|
+|---|---|---|
+|void|	clear()|	Mapからすべての要素を削除します。
+|boolean|	containsKey(Object)|	引数で指定されたキーが、Mapに存在する場合trueを返します。
+|boolean|	containsValue(Object)|	引数で指定された値が、Mapに存在する場合trueを返します。
+|Object|	get(Object)|	引数に指定されたキーに紐付けられた値を返します。
+|Object|	put(Object, Object)|	指定された引数(キー, 値)を、Mapに挿入します。
+|void|	putAll(Map)|	引数に指定されたMapの要素すべてを、Mapに挿入します。
+|Object|	remove (Object)|	引数に指定されたキーがMapに存在する場合、そのキーと紐付けられた値を削除します。
+|Set|	keySet()|	Mapに格納されているキーを持つ、セットビューを返します。
+|Collection|	values()|	Mapに格納されている値を持つ、コレクションビューを返します。
 
-java
 
+###HashMapのサンプル
+
+```java
 // HashMapのテスト
 public void testHashMap() {
     try {
@@ -96,3 +98,5 @@ static HashMap<String,String> getHashMap(String keyName, int size) {
     }
     return map;
 }
+```
+

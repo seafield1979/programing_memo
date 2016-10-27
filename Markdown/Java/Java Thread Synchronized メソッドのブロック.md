@@ -1,6 +1,5 @@
-#Java Synchronizedメソッドでブロック
+#Synchronized Method でブロック
 
-###同期(synchronized)
 複数のスレッドで１つのオブジェクトに何かしらの処理を行う場合に、タイミングによってはおかしな状況になることがある。  
 例えば複数のスレッドから使用される MyData というオブジェクトがあり、このMyDataは途中で
 
@@ -13,23 +12,23 @@ this.total = val;
 
 |Thread1|Thread2|コメント|
 |---|---|---|
-int val = this.total; | --- | val = 0
-val += 10; | --- | val = 10
-this.total = val; | --- | this.total = 10
----|int val = this.total; | val = 10
----|val += 10; | val = 20
----|this.total = val; | this.total = 20
+|int val = this.total; | --- | val = 0
+|val += 10; | --- | val = 10
+|this.total = val; | --- | this.total = 10
+|---|int val = this.total; | val = 10
+|---|val += 10; | val = 20
+|---|this.total = val; | this.total = 20
 
 だがしかし、途中でスレッドが変わると以下のようになる可能性がある
 
 |Thread1|Thread2|コメント|
 |---|---|---|
-int val = this.total | --- | val = 0
-           val += 10 | --- | val = 10
-                 --- | int val = this.total | val = 0
-                 --- | val += 10 | val = 10
-                 --- | this.total = val | this.total = 10
-    this.total = val | --- | this.total = 10 
+|int val = this.total | --- | val = 0
+|           val += 10 | --- | val = 10
+|                 --- | int val = this.total | val = 0
+|                 --- | val += 10 | val = 10
+|                 --- | this.total = val | this.total = 10
+|    this.total = val | --- | this.total = 10 
 
 本来は計算処理が２回走ったのでtotalは２０になっていて欲しかったのが10にしかならない。
 
@@ -38,14 +37,13 @@ synchronized を使用すると複数のスレッドが１つのブロックや�
 使用例
 1.関数単位で複数のスレッドからのアクセスを制限する。
 
-~~~
+```java
 // このメソッドを処理できるのは一度に１つのスレッドだけ
 synchronized　void　calcTotal（）{
   
 }；
-~~~
 
-~~~java
+
 // 複数のスレッドから利用されるクラス
 // 特定の処理を行っている間は他のスレッドから呼び出して欲しくないメソッドには synchronized をつけて、同時アクセスされないようにする
 class SynchronizedClass {
@@ -87,14 +85,15 @@ class TestThread {
         thread2.start();
     }
 }
-~~~
+```
 
 出力結果。最後まで start! end! が順に表示される。
 
-~~~shell
+```sh
 start! end!
 start! end!
 start! end!
 ...
 start! end!
-~~~
+```
+

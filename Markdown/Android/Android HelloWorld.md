@@ -64,3 +64,26 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
+
+###トースト(ポップアップのようなもの)
+
+```java
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity{
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      ~~~
+    toastMake("hoge", 0, 0);
+  }
+  // Toast を表示する
+  // x,y はデフォルトの表示位置(画面中央)からのオフセット
+  private void toastMake(String message, int x, int y){
+      Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+      toast.setGravity(Gravity.CENTER | Gravity.CENTER, x, y);
+      toast.show();
+  }
+}
+```
+

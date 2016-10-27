@@ -1,9 +1,11 @@
 #文字列 string
 
+[Android Developer String](https://developer.android.com/reference/java/lang/String.html)
+
 ###String
 Javaでは文字列変数はString型で管理される。文字列リテラルはC言語と同じchar型(16ビットのUnicode)が使われる。
 
-~~~java
+```swift
 "ほげほげ"  // 文字列リテラル
 
 // 初期値の代入と、その値を書き換える
@@ -19,10 +21,24 @@ String str3 = str1 + " " + str2;
 
 System.out.println("str1:" + str1 + "\nstr2:" + str2 + "\nstr3:" + str3);  // hoge1
 
-~~~
+// 指定のフォーマットで文字列を作成
+// Androidだと Localeを指定しないと警告になる
+String str4 = String.format(Locale.US, "%d:%s", 100, "hoge");
+```
 
 ###Stringのメソッド
-~~~java
+
+|戻り値|メソッド|説明|
+|---|---|---|
+|String|format(Locale l, String format, Object... args)|"%d"のようなフォーマット指定で文字列を作成する|
+|boolean|equals(Object)| 文字列が等しいかどうかチェック|
+|String|substring(int start, int end)|文字列の切り出し|
+|int|indexOf(String str)|引数の文字列が見つかった位置を返す<br>文字列が見つからなかった場合は-1を返す|
+|String|concat(String str)|文字列を結合する|
+|boolean|startsWith(String prefix)|文字列の先頭が一致するかをチェックする|
+|boolean|endsWith(String suffix)|文字列の末尾が一致するかをチェックする|
+
+```swift
 String str = "01234567890";
 String str2 = "this is an apple!";
 
@@ -59,12 +75,12 @@ System.out.println(concat1);
 System.out.println("- startsWith, endsWith");
 System.out.println(String.valueOf(str.startsWith("012")));
 System.out.println(String.valueOf(str.endsWith("890")));
-~~~
+```
 
 ###Stringとchar配列の相互変換
 [[Java] String → char[], char[] → String への変換](http://kadoppe.com/archives/2011/03/java-string-char-conversio.html)
 
-~~~java
+```swift
 // String -> char
 // String.toCharArray()を使用する
 String str = "Hello";
@@ -78,10 +94,11 @@ for (char ch : charArray) {
 charArray[1] = 'a';
 String newStr = String.valueOf(charArray);
 System.out.println(newStr);
-~~~
+```
 
 ###StringとIntegerの相互変換
-~~~java
+
+```swift
 // 文字列 -> 整数値
 int val1 = Integer.parseInt("123");
 
@@ -89,7 +106,7 @@ int val1 = Integer.parseInt("123");
 String str1 = String.valueOf(100);
 
 System.out.printf("%d %s\n",val1, str1);
-~~~
+```
 
 ### StringBuffer
 <!-- stringbuffer:: -->
@@ -98,7 +115,7 @@ Stringは文字を１つ追加したり削除したりした場合でも、別�
   
 詳細はこちら([StringBufferのメソッド](http://www.javaroad.jp/java_character5.htm))  
 
-```java:substring.java
+```swift
 // 文字列を追加する append
 StringBuffer strbuf3 = new StringBuffer("hoge");
 strbuf3.append(" hoge!");
@@ -129,10 +146,10 @@ System.out.println(String.valueOf(strbuf2.capacity()));
 
 |エスケープシーケンス|意味|
 |---|---|
-¥t | Tab
-¥n | 改行
-¥r | 復帰(カーソルが行の先頭に移動)
-¥f | 改ページ
-¥' | シングルクオーテーション
-¥" | ダブルクオーテーション
-¥¥ | ¥文字
+|¥t | Tab
+|¥n | 改行
+|¥r | 復帰(カーソルが行の先頭に移動)
+|¥f | 改ページ
+|¥' | シングルクオーテーション
+|¥" | ダブルクオーテーション
+|¥¥ | ¥文字

@@ -1,10 +1,10 @@
 #EditText
 
 
-|メソッド|説明|
-|---|---|
-|String getText()|文字列を取得する|
-|setText(String)|文字列を設定する|
+|戻り値|メソッド|説明|
+|---|---|---|
+|Editable|String getText()|文字列を取得する|
+|Editable|setText(String)|文字列を設定する|
 
 
 ###ヒント(プレースホルダー)を表示する
