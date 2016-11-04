@@ -111,6 +111,17 @@ startActivity(i);
 ###バックキーの動作を変更する
 端末のバックキーの動作を変更するにはActivityクラスの`onBackPressed()`メソッドをオーバーライドする。ここで親クラスの処理を呼ばないことでアプリの終了を行わなくすることもできる。
 
-```xml
-
+```java
+@Override
+public boolean onKeyDown(int keyCode, KeyEvent event) {
+    if(keyCode==KeyEvent.KEYCODE_BACK){
+        // なんらかの処理
+        return true;
+    }
+    return false;
+}
 ```
+
+###引数を渡す、受け取る
+引数の受け渡しはIntentの項目を参照
+[Android Intent](quiver:///notes/84F77DCC-D6E3-4AB9-B14E-6F2DE50946BC)

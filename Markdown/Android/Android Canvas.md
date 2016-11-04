@@ -1,5 +1,10 @@
 #キャンバス Canvas
 
+
+###リンク
+Canvasのほぼ全ての描画方法が開設されている。
+[AndroidのCanvasを使いこなす！ - 基本的な描画](https://tech.recruit-mp.co.jp/mobile/remember_canvas1/)
+
 ### ベースのプロジェクト
 キャンバスを使用した図形や文字の描画
 

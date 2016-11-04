@@ -4,6 +4,7 @@
 
 [Androidアプリ開発メモ Fragmentを使う](http://humitomotti.hateblo.jp/entry/2015/09/21/035221)
 
+
 Fragmentとは、簡単にいうと、コンテンツとライフサイクルを持ったビューです。
 
 * Android 3系で追加された(以前はActivityオンリー)
@@ -24,7 +25,7 @@ Fragmentとは、簡単にいうと、コンテンツとライフサイクルを
 
 |操作|イベント|説明|
 |---|---|
-|アプリ起動|onAttach<br>onCreate<br>onCreateView<br>onActivityCreated<br>onStart<br>onResume|FragmentTransactionにadd,commitしたとき|
+|アプリ起動|onAttach<br>onCreate<br>onCreateView<br>onViewCreated<br>onActivityCreated<br>onStart<br>onResume|FragmentTransactionにadd,commitしたとき|
 |アプリ終了|onPause<br>onStop<br>onDestroyView<br>onDestroy<br>onDetach|戻るボタンでアプリを終了したとき|
 |ホームボタン|onPause<br>onStop|ホームボタンでホームに戻ったとき|
 |再表示|onStart<br>onResume|タスク一覧から選択して再表示したとき|
@@ -33,7 +34,7 @@ Activityのライフサイクルとの対応
 
 |Activityの状態|Fragmentイベント|
 |---|---|
-|Create|onAttach<br>onCreate<br>onCreateView<br>onActivityCreated|
+|Create|onAttach<br>onCreate<br>onCreateView<br>onViewCreated<br>onActivityCreated|
 |Started|onStart|
 |Resumed|onResume|
 |Paused|onPause|
@@ -82,12 +83,22 @@ import android.widget.TextView;
 /**
  * Created by shutaro on 2016/09/28.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements OnClickListener{
     public static final String FRAMGMENT_NAME = MainFragment.class.getName();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment1, container, false);
         return view;
+    }
+    
+    // Viewが生成し終わった時に呼ばれるメソッド
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        // メンバ変数のヒモ付けやイベントリスナーの登録をしたりする
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(this);
     }
 }
 ```
@@ -186,11 +197,27 @@ public class MainFragment extends Fragment {
 表示するフラグメントを切り替える方法はいくつかある。
 
 ###Add/Remove
+FragmentTransaction.add() でViewGroupにFragmentを追加できる。一度に複数のFragmentを追加できる。複数追加した場合は最後に追加したものが表示される。
+
+```java
+// FragmentManagerからFragmentTransactionを作成
+FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+// コンテナにMainFragmentを格納
+this.fragment1 = new Fragment1();
+transaction.add(R.id.fragment_container, fragment1, Fragment1.FRAMGMENT_NAME);
+
+this.fragment2 = new Fragment2();
+transaction.add(R.id.fragment_container, fragment2, Fragment2.FRAMGMENT_NAME);
+
+this.fragment3 = new Fragment3();
+transaction.add(R.id.fragment_container, fragment3, Fragment3.FRAMGMENT_NAME);
+
+// 上記の変更を反映する
+transaction.commit();
+```
 
 ###Replace
-
-###Show/Hide
-
 すでに表示中のフラグメントを置き換えるにはreplaceメソッドを使用する
 
 ```java
@@ -199,12 +226,30 @@ public class MainFragment extends Fragment {
   // 実際に使用するFragmentの作成
   Fragment newFragment = new <フラグメントクラス名>();
   // Fragmentを組み込む
-  transaction.replace(R.id.<フラグメントを表示するGroupView>, newFragment);
+  transaction.replace(R.id.<フラグメントを表示するViewGroup>, newFragment);
   // backstackに追加
   transaction.addToBackStack(null);
   // 上記の変更を反映する
   transaction.commit();
+```
 
+###Show/Hide
+指定のFragmentの表示を切り替える
+
+```java
+// show/hideするFragmentをaddしておく
+FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+this.fragment1 = new Fragment1();
+transaction.add(R.id.fragment_container, fragment1, Fragment1.FRAMGMENT_NAME);
+this.fragment2 = new Fragment2();
+transaction.add(R.id.fragment_container, fragment2, Fragment2.FRAMGMENT_NAME);
+transaction.commit();
+
+// fragment1を表示,fragment2を隠す
+FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+transaction.show(fragment1);
+transaction.hide(fragment2);
+transaction.commit();
 ```
 
 ###テクニック
@@ -222,13 +267,4 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
 
     return view;
 }
-```
-
-コンテキストを取得する
-
-```java
-public FragmentActivity getActivity();
-
-例
-getActivity()
 ```

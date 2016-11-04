@@ -20,6 +20,7 @@ mContainer.addView(view);
 
 |イベント|説明|
 |---|---|
+|onDraw|Viewの描画処理。invalidateされると呼ばれる|
 |onMeasure|自分自身の幅高さを確定させるもの|
 |onLayout|子Viewの位置を決めるもの|
 
@@ -76,3 +77,23 @@ protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     setMeasuredDimension(width, height);
 }
 ```
+
+###表示状態の切り替え
+
+View.setVisibility(int Visibility);
+
+visiblitiyに設定する値
+
+|引数|説明|
+|---|---|
+|View.VISIBLE|	表示する|
+|View.INVISIBLE|	非表示にする非表示にした領域は詰めない。viewが見えないだけで、領域は占める。CSSのvisibility:hiddenに似ています。|
+|View.GONE|	非表示にする。非表示にした領域を詰める。viewがそもそもなかったように振舞う。CSSのdisplay:noneに似ています。|
+
+```java
+// 例
+view.setVisibility(View.VISIBLE);
+view.setVisibility(View.INVISIBLE);
+view.setVisibility(View.GONE);
+```
+

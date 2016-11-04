@@ -4,6 +4,10 @@
 他のアクティビティーやアプリとやり取りを行う箱のようなもの。新しくアクティビティーを表示したい時、アプリを立ち上げたい時にインテントに呼び出す先の情報を設定して StartActivity() などをコールする。
 
 
+[FragmentとActivityの連携方法](http://quesera2.hatenablog.jp/entry/2014/04/09/003146)
+
+
+
 ###アクティビティーを起動する
 
 ```java
@@ -106,3 +110,12 @@ for (ResolveInfo info : activities) {
     Log.v("myLog", (String)info.loadLabel(pm));
 }
 ```
+
+##いろいろな呼び出しパターン
+いろんなパターンを考えてみた
+
+###ActivityA -> ActivityB -> ActivityA
+
+###Activity -> Fragment -> Activity
+
+###Fragment -> Activity -> Fragment

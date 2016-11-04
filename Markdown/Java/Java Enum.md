@@ -70,3 +70,81 @@ System.out.println("Int1=" + IntEnum.Int1.getMessage());
 System.out.println("Int2=" + IntEnum.Int2.getMessage());
 System.out.println("Int3=" + IntEnum.Int3.getMessage());
 ```
+
+###各値の文字列を返すEnum
+
+```java
+enum EnumStr {
+    TYPE1("AAA"),
+    TYPE2("BBB"),
+    TYPE3("CCC"),
+    ;
+
+    private final String text;
+
+    private EnumStr(final String text) {
+        this.text = text;
+    }
+
+    public String getString() {
+        return this.text;
+    }
+}
+
+// 使用例
+EnumStr es1 = EnumStr.TYPE1;
+EnumStr es2 = EnumStr.TYPE2;
+EnumStr es3 = EnumStr.TYPE3;
+
+System.out.println("es1=" + es1.getString());  // es1=AAA 
+System.out.println("es2=" + es2.getString());  // es2=BBB
+System.out.println("es3=" + es3.getString());  // es3=CCC
+```
+
+###全要素をforで回す
+
+```java
+// その１ ただのEnum
+enum DAY {
+    MON,
+    TUE,
+    WED,
+    THU,
+    FRI,
+    SAT,
+    SUN
+}
+for (DAY day : DAY.values()) {
+    System.out.println("num:" + day.ordinal() + " " + day.toString());   
+    // num:0 MON
+    // num:1 TUE
+    // num:2 WED
+    // num:3 THU
+    // num:4 FRI
+    // num:5 SAT
+    // num:6 SUN
+}
+
+// その２ 値を持つEnum
+enum EnumStr {
+    TYPE1("AAA"),
+    TYPE2("BBB"),
+    TYPE3("CCC"),
+    ;
+
+    private final String text;
+
+    private EnumStr(final String text) {
+        this.text = text;
+    }
+
+    public String getString() {
+        return this.text;
+    }
+}
+
+// forループで全要素にアクセス
+for (EnumStr es : EnumStr.values()) {
+    System.out.println("num:" + es.ordinal() + " " + es.getString());
+}
+```
